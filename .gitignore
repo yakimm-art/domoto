@@ -1,0 +1,33 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# NuGet packages
+packages/
+*.nupkg
+nuget.exe
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# SharpDevelop
+*.pidb
+*.sdf
+*.opensdf
+
+# Visual Studio
+.vs/
+*.rsuser
+*.cache
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Kiro spec files
+.kiro/specs/**/design.md
+.kiro/specs/**/requirements.md
+.kiro/specs/**/tasks.md

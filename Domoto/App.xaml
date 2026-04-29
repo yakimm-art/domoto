@@ -1,0 +1,17 @@
+﻿<Application x:Class="Domoto.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helpers="clr-namespace:Domoto.Helpers"
+    StartupUri="Window1.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/NeobrutalistTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <helpers:BoolToStrikethroughConverter x:Key="BoolToStrikethrough"/>
+            <helpers:InverseBoolConverter x:Key="InverseBool"/>
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVis"/>
+            <helpers:FirstLetterConverter x:Key="FirstLetterConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

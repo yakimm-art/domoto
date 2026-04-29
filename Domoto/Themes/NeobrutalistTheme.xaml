@@ -1,0 +1,507 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ============================================================ -->
+    <!-- COLOR BRUSHES                                                 -->
+    <!-- ============================================================ -->
+    <SolidColorBrush x:Key="NeoBg"           Color="#F5F5F0"/>
+    <SolidColorBrush x:Key="NeoSidebarBg"    Color="#1E1E2E"/>
+    <SolidColorBrush x:Key="NeoBorder"        Color="#222222"/>
+    <SolidColorBrush x:Key="NeoAccentBlue"    Color="#4A90D9"/>
+    <SolidColorBrush x:Key="NeoAccentGreen"   Color="#6BCB77"/>
+    <SolidColorBrush x:Key="NeoAccentPink"    Color="#FF6B8A"/>
+    <SolidColorBrush x:Key="NeoAccentOrange"  Color="#FFA552"/>
+    <SolidColorBrush x:Key="NeoAccentYellow"  Color="#FFD93D"/>
+    <SolidColorBrush x:Key="NeoAccentTeal"    Color="#6EC6CA"/>
+    <SolidColorBrush x:Key="NeoText"          Color="#222222"/>
+    <SolidColorBrush x:Key="NeoTextLight"     Color="#F5F5F0"/>
+    <SolidColorBrush x:Key="NeoCardBg"        Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="NeoInputBg"       Color="#FFFFFF"/>
+
+    <!-- ============================================================ -->
+    <!-- FONT SIZE HIERARCHY                                           -->
+    <!-- Headings: 20-28px  |  Body: 13-15px  |  Labels: 11-12px      -->
+    <!-- ============================================================ -->
+    <FontFamily x:Key="NeoFontFamily">Segoe UI</FontFamily>
+    <System:Double x:Key="NeoFontHeadingLarge" xmlns:System="clr-namespace:System;assembly=mscorlib">28</System:Double>
+    <System:Double x:Key="NeoFontHeading" xmlns:System="clr-namespace:System;assembly=mscorlib">24</System:Double>
+    <System:Double x:Key="NeoFontHeadingSmall" xmlns:System="clr-namespace:System;assembly=mscorlib">20</System:Double>
+    <System:Double x:Key="NeoFontBody" xmlns:System="clr-namespace:System;assembly=mscorlib">14</System:Double>
+    <System:Double x:Key="NeoFontBodySmall" xmlns:System="clr-namespace:System;assembly=mscorlib">13</System:Double>
+    <System:Double x:Key="NeoFontLabel" xmlns:System="clr-namespace:System;assembly=mscorlib">12</System:Double>
+    <System:Double x:Key="NeoFontLabelSmall" xmlns:System="clr-namespace:System;assembly=mscorlib">11</System:Double>
+
+
+    <!-- ============================================================ -->
+    <!-- BUTTON STYLE (Implicit)                                       -->
+    <!-- 2px solid border, 8px radius, bold font, hard shadow          -->
+    <!-- Contrast: #222 text on #FFF bg = 16.75:1 (passes 4.5:1)      -->
+    <!-- ============================================================ -->
+    <Style TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoCardBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="16,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Hard shadow rectangle (offset 3px right, 3px down) -->
+                        <Border Background="{StaticResource NeoBorder}"
+                                CornerRadius="8"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="3" Y="3"/>
+                            </Border.RenderTransform>
+                        </Border>
+                        <!-- Main button surface -->
+                        <Border x:Name="MainBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="1" Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="MainBorder" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="3" Y="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- ============================================================ -->
+    <!-- TEXTBOX STYLE (Implicit)                                      -->
+    <!-- 2px border, 8px radius, white bg, 13px font                  -->
+    <!-- Contrast: #222 text on #FFF bg = 16.75:1 (passes 4.5:1)      -->
+    <!-- ============================================================ -->
+    <Style TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoInputBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="CaretBrush" Value="{StaticResource NeoText}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- PASSWORDBOX STYLE (Implicit) — matches TextBox                -->
+    <!-- ============================================================ -->
+    <Style TargetType="PasswordBox">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoInputBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="CaretBrush" Value="{StaticResource NeoText}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- ============================================================ -->
+    <!-- COMBOBOX STYLE (Implicit)                                     -->
+    <!-- 2px border, 8px radius                                        -->
+    <!-- ============================================================ -->
+    <Style TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoInputBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- CHECKBOX STYLE (Implicit)                                     -->
+    <!-- Bold border, accent color when checked                        -->
+    <!-- Contrast: #222 on #F5F5F0 = 14.5:1 (passes 4.5:1)           -->
+    <!-- ============================================================ -->
+    <Style TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="checkBorder"
+                                Width="20" Height="20"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="2"
+                                CornerRadius="4"
+                                Background="{StaticResource NeoCardBg}"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="checkMark"
+                                       Text="✓"
+                                       FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource NeoCardBg}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,-2,0,0"/>
+                        </Border>
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="checkBorder" Property="Background"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                            <Setter TargetName="checkBorder" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                            <Setter TargetName="checkMark" Property="Foreground"
+                                    Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="checkBorder" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- ============================================================ -->
+    <!-- DATEPICKER STYLE (Implicit)                                   -->
+    <!-- 2px border, matching input styling                            -->
+    <!-- ============================================================ -->
+    <Style TargetType="DatePicker">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoInputBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- DATAGRID STYLES (Implicit)                                    -->
+    <!-- Bold header, alternating rows, 2px border                     -->
+    <!-- Header: #222 bg, #F5F5F0 text = 14.5:1 (passes 4.5:1)       -->
+    <!-- Rows: #222 text on #FFF/#F5F5F0 = 16.75:1/14.5:1             -->
+    <!-- ============================================================ -->
+    <Style TargetType="DataGrid">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Background" Value="{StaticResource NeoCardBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="RowBackground" Value="White"/>
+        <Setter Property="AlternatingRowBackground" Value="#F5F5F0"/>
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="#DDDDDD"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoTextLight}"/>
+        <Setter Property="Background" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <Style TargetType="DataGridRow">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#E0EDFF"/>
+                <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#EEF2F7"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="DataGridCell">
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!-- ============================================================ -->
+    <!-- LISTBOXITEM STYLE (Implicit)                                  -->
+    <!-- Transparent selection, hover highlight with accent border      -->
+    <!-- ============================================================ -->
+    <Style TargetType="ListBoxItem">
+        <Setter Property="FontFamily" Value="{StaticResource NeoFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource NeoText}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="itemBorder"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="3,0,0,0"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="itemBorder" Property="Background" Value="#F0F0EB"/>
+                            <Setter TargetName="itemBorder" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="itemBorder" Property="Background" Value="#E8E8E3"/>
+                            <Setter TargetName="itemBorder" Property="BorderBrush"
+                                    Value="{StaticResource NeoAccentBlue}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- NEOCARD STYLE (Keyed) for Border                              -->
+    <!-- 2px border, 12px radius, white bg, hard shadow (3px offset)   -->
+    <!-- ============================================================ -->
+    <Style x:Key="NeoCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource NeoCardBg}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NeoBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- SCROLLBAR STYLES — Thin, rounded thumb, transparent track     -->
+    <!-- ============================================================ -->
+
+    <!-- Vertical ScrollBar Thumb -->
+    <Style x:Key="NeoScrollBarThumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border x:Name="thumbBorder"
+                            Background="{StaticResource NeoBorder}"
+                            CornerRadius="4"
+                            Opacity="0.35"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="thumbBorder" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="thumbBorder" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Vertical ScrollBar -->
+    <Style x:Key="NeoVerticalScrollBar" TargetType="ScrollBar">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="MinWidth" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource NeoScrollBarThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Horizontal ScrollBar -->
+    <Style x:Key="NeoHorizontalScrollBar" TargetType="ScrollBar">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="MinHeight" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" IsDirectionReversed="False">
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource NeoScrollBarThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Custom ScrollViewer style using thin scrollbars -->
+    <Style x:Key="NeoScrollViewer" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
+                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                   Grid.Column="1" Grid.Row="0"
+                                   Style="{StaticResource NeoVerticalScrollBar}"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                   Grid.Column="0" Grid.Row="1"
+                                   Orientation="Horizontal"
+                                   Style="{StaticResource NeoHorizontalScrollBar}"
+                                   Value="{TemplateBinding HorizontalOffset}"
+                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
