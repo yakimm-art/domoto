@@ -12,14 +12,19 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- App Title -->
-        <TextBlock Grid.Row="0"
-                   Text="Domoto"
-                   FontFamily="{StaticResource NeoFontFamily}"
-                   FontSize="{StaticResource NeoFontHeading}"
-                   FontWeight="Bold"
-                   Foreground="{StaticResource NeoTextLight}"
-                   Margin="20,20,20,12"/>
+        <!-- App Title with decorative element -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,20,20,12">
+            <TextBlock Text="Domoto"
+                       FontFamily="{StaticResource NeoFontFamily}"
+                       FontSize="{StaticResource NeoFontHeading}"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource NeoTextLight}"/>
+            <TextBlock Text=" ✦"
+                       FontSize="14"
+                       Foreground="{StaticResource NeoAccentTeal}"
+                       VerticalAlignment="Top"
+                       Margin="4,4,0,0"/>
+        </StackPanel>
 
         <!-- Search Bar -->
         <TextBox Grid.Row="1"
@@ -35,153 +40,180 @@
                  ToolTip="Search tasks..."
                  AutomationProperties.Name="Search tasks"/>
 
-        <!-- Navigation Section -->
-        <StackPanel Grid.Row="2" Margin="0,4,0,0">
+        <!-- Navigation Section with gradient overlay -->
+        <Grid Grid.Row="2">
+            <StackPanel Margin="0,4,0,0">
 
-            <!-- Section Header -->
-            <TextBlock Text="NAVIGATION"
-                       FontFamily="{StaticResource NeoFontFamily}"
-                       FontSize="{StaticResource NeoFontLabelSmall}"
-                       FontWeight="Bold"
-                       Foreground="#6C6C8A"
-                       Margin="20,0,20,8"/>
+                <!-- Section Header -->
+                <TextBlock Text="NAVIGATION"
+                           FontFamily="{StaticResource NeoFontFamily}"
+                           FontSize="{StaticResource NeoFontLabelSmall}"
+                           FontWeight="Bold"
+                           Foreground="#6C6C8A"
+                           Margin="20,0,20,8"/>
 
-            <!-- Separator line between header and nav items -->
-            <Border Height="1" Background="#3A3A50" Margin="16,0,16,8"/>
+                <!-- Separator line between header and nav items -->
+                <Border Height="1" Background="#3A3A50" Margin="16,0,16,8"/>
 
-            <!-- Home -->
-            <Button Command="{Binding NavigateHomeCommand}" Cursor="Hand" Margin="0,0,0,2">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="NavBorder"
-                                            Background="Transparent"
-                                            BorderThickness="3,0,0,0"
-                                            BorderBrush="Transparent"
-                                            Padding="20,10,16,10">
-                                        <TextBlock Text="🏠  Home"
-                                                   FontFamily="{StaticResource NeoFontFamily}"
-                                                   FontSize="{StaticResource NeoFontBody}"
-                                                   Foreground="{StaticResource NeoTextLight}"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding ActiveNavItem}" Value="Home">
-                                            <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+                <!-- Home -->
+                <Button Command="{Binding NavigateHomeCommand}" Cursor="Hand" Margin="0,0,0,2">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="NavBorder"
+                                                Background="Transparent"
+                                                BorderThickness="3,0,0,0"
+                                                BorderBrush="Transparent"
+                                                Padding="20,10,16,10">
+                                            <TextBlock Text="🏠  Home"
+                                                       FontFamily="{StaticResource NeoFontFamily}"
+                                                       FontSize="{StaticResource NeoFontBody}"
+                                                       Foreground="{StaticResource NeoTextLight}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Home">
+                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
-            <!-- Tasks -->
-            <Button Command="{Binding NavigateTasksCommand}" Cursor="Hand" Margin="0,0,0,2">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="NavBorder"
-                                            Background="Transparent"
-                                            BorderThickness="3,0,0,0"
-                                            BorderBrush="Transparent"
-                                            Padding="20,10,16,10">
-                                        <TextBlock Text="📋  Tasks"
-                                                   FontFamily="{StaticResource NeoFontFamily}"
-                                                   FontSize="{StaticResource NeoFontBody}"
-                                                   Foreground="{StaticResource NeoTextLight}"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding ActiveNavItem}" Value="Tasks">
-                                            <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+                <!-- Tasks with count badge -->
+                <Button Command="{Binding NavigateTasksCommand}" Cursor="Hand" Margin="0,0,0,2">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="NavBorder"
+                                                Background="Transparent"
+                                                BorderThickness="3,0,0,0"
+                                                BorderBrush="Transparent"
+                                                Padding="20,10,16,10">
+                                            <DockPanel>
+                                                <!-- Task count badge on the right -->
+                                                <Border DockPanel.Dock="Right"
+                                                        Background="{StaticResource NeoAccentBlue}"
+                                                        CornerRadius="9"
+                                                        Padding="7,2"
+                                                        VerticalAlignment="Center"
+                                                        Margin="8,0,4,0">
+                                                    <TextBlock Text="6"
+                                                               FontFamily="{StaticResource NeoFontFamily}"
+                                                               FontSize="10" FontWeight="Bold"
+                                                               Foreground="White"
+                                                               HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="📋  Tasks"
+                                                           FontFamily="{StaticResource NeoFontFamily}"
+                                                           FontSize="{StaticResource NeoFontBody}"
+                                                           Foreground="{StaticResource NeoTextLight}"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Tasks">
+                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
-            <!-- Profile -->
-            <Button Command="{Binding NavigateProfileCommand}" Cursor="Hand" Margin="0,0,0,2">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="NavBorder"
-                                            Background="Transparent"
-                                            BorderThickness="3,0,0,0"
-                                            BorderBrush="Transparent"
-                                            Padding="20,10,16,10">
-                                        <TextBlock Text="👤  Profile"
-                                                   FontFamily="{StaticResource NeoFontFamily}"
-                                                   FontSize="{StaticResource NeoFontBody}"
-                                                   Foreground="{StaticResource NeoTextLight}"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding ActiveNavItem}" Value="Profile">
-                                            <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
+                <!-- Profile -->
+                <Button Command="{Binding NavigateProfileCommand}" Cursor="Hand" Margin="0,0,0,2">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="NavBorder"
+                                                Background="Transparent"
+                                                BorderThickness="3,0,0,0"
+                                                BorderBrush="Transparent"
+                                                Padding="20,10,16,10">
+                                            <TextBlock Text="👤  Profile"
+                                                       FontFamily="{StaticResource NeoFontFamily}"
+                                                       FontSize="{StaticResource NeoFontBody}"
+                                                       Foreground="{StaticResource NeoTextLight}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Profile">
+                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
-            <!-- Admin (visible only when IsAdmin is true) -->
-            <Button Command="{Binding NavigateAdminCommand}" Cursor="Hand" Margin="0,0,0,2"
-                    Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="NavBorder"
-                                            Background="Transparent"
-                                            BorderThickness="3,0,0,0"
-                                            BorderBrush="Transparent"
-                                            Padding="20,10,16,10">
-                                        <TextBlock Text="🔧  Admin"
-                                                   FontFamily="{StaticResource NeoFontFamily}"
-                                                   FontSize="{StaticResource NeoFontBody}"
-                                                   Foreground="{StaticResource NeoTextLight}"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding ActiveNavItem}" Value="Admin">
-                                            <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                            <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-        </StackPanel>
+                <!-- Admin (visible only when IsAdmin is true) -->
+                <Button Command="{Binding NavigateAdminCommand}" Cursor="Hand" Margin="0,0,0,2"
+                        Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="NavBorder"
+                                                Background="Transparent"
+                                                BorderThickness="3,0,0,0"
+                                                BorderBrush="Transparent"
+                                                Padding="20,10,16,10">
+                                            <TextBlock Text="🔧  Admin"
+                                                       FontFamily="{StaticResource NeoFontFamily}"
+                                                       FontSize="{StaticResource NeoFontBody}"
+                                                       Foreground="{StaticResource NeoTextLight}"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Admin">
+                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
+                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+            <!-- Subtle gradient overlay at bottom of nav section -->
+            <Border VerticalAlignment="Bottom" Height="40" IsHitTestVisible="False">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="Transparent" Offset="0"/>
+                        <GradientStop Color="#1E1E2E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+        </Grid>
 
         <!-- User Info + Logout at bottom -->
         <Border Grid.Row="3"
@@ -206,9 +238,15 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="Transparent" Padding="8,4">
+                                        <Border x:Name="LogoutBorder" Background="Transparent"
+                                                CornerRadius="6" Padding="8,4">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="LogoutBorder" Property="Background" Value="#3D2A2A"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

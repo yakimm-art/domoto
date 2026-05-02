@@ -42,6 +42,12 @@
                             VerticalAlignment="Center"
                             AutomationProperties.Name="Start tracking tasks"/>
                     <StackPanel VerticalAlignment="Center">
+                        <!-- Greeting with time of day -->
+                        <TextBlock Text="Good morning ☀️"
+                                   FontFamily="{StaticResource NeoFontFamily}"
+                                   FontSize="{StaticResource NeoFontBody}"
+                                   Foreground="{StaticResource NeoSubtext}"
+                                   Margin="0,0,0,4"/>
                         <TextBlock Text="Daily task manager"
                                    FontFamily="{StaticResource NeoFontFamily}"
                                    FontSize="{StaticResource NeoFontHeadingLarge}"
@@ -50,15 +56,26 @@
                         <TextBlock Text="Track, manage, and complete your tasks with ease."
                                    FontFamily="{StaticResource NeoFontFamily}"
                                    FontSize="{StaticResource NeoFontBody}"
-                                   Foreground="#666666"
+                                   Foreground="{StaticResource NeoSubtext}"
                                    Margin="0,6,0,0"/>
+                        <!-- Progress bar visual -->
+                        <Grid Margin="0,12,0,0" Height="8" MaxWidth="300" HorizontalAlignment="Left">
+                            <Border Background="#E0E0E0" CornerRadius="4"/>
+                            <Border Background="{StaticResource NeoAccentGreen}" CornerRadius="4"
+                                    HorizontalAlignment="Left" Width="180"/>
+                        </Grid>
+                        <TextBlock Text="60% completed"
+                                   FontFamily="{StaticResource NeoFontFamily}"
+                                   FontSize="{StaticResource NeoFontLabelSmall}"
+                                   Foreground="{StaticResource NeoSubtext}"
+                                   Margin="0,4,0,0"/>
                     </StackPanel>
                 </DockPanel>
                 </Border>
             </Grid>
 
             <!-- ======================================================= -->
-            <!-- STATS ROW — Three neobrutalism cards                     -->
+            <!-- STATS ROW — Three neobrutalism cards with icons          -->
             <!-- ======================================================= -->
             <TextBlock Grid.Row="1"
                        Text="Overview"
@@ -82,11 +99,14 @@
                             CornerRadius="12"
                             Padding="20,16">
                         <StackPanel>
+                            <TextBlock Text="📊"
+                                       FontSize="20"
+                                       Margin="0,0,0,4"/>
                             <TextBlock Text="In Progress"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontLabel}"
                                        FontWeight="Bold"
-                                       Foreground="#666666"/>
+                                       Foreground="{StaticResource NeoSubtext}"/>
                             <TextBlock Text="{Binding InProgressCount}"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontHeadingLarge}"
@@ -114,11 +134,14 @@
                             CornerRadius="12"
                             Padding="20,16">
                         <StackPanel>
+                            <TextBlock Text="✅"
+                                       FontSize="20"
+                                       Margin="0,0,0,4"/>
                             <TextBlock Text="Completed"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontLabel}"
                                        FontWeight="Bold"
-                                       Foreground="#666666"/>
+                                       Foreground="{StaticResource NeoSubtext}"/>
                             <TextBlock Text="{Binding CompletedCount}"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontHeadingLarge}"
@@ -146,11 +169,14 @@
                             CornerRadius="12"
                             Padding="20,16">
                         <StackPanel>
+                            <TextBlock Text="⚠️"
+                                       FontSize="20"
+                                       Margin="0,0,0,4"/>
                             <TextBlock Text="Overdue"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontLabel}"
                                        FontWeight="Bold"
-                                       Foreground="#666666"/>
+                                       Foreground="{StaticResource NeoSubtext}"/>
                             <TextBlock Text="{Binding OverdueCount}"
                                        FontFamily="{StaticResource NeoFontFamily}"
                                        FontSize="{StaticResource NeoFontHeadingLarge}"
@@ -385,12 +411,12 @@
                                                 <TextBlock Text="{Binding Category}"
                                                            FontFamily="{StaticResource NeoFontFamily}"
                                                            FontSize="{StaticResource NeoFontLabelSmall}"
-                                                           Foreground="#888888"
+                                                           Foreground="{StaticResource NeoSubtext}"
                                                            Margin="0,0,12,0"/>
                                                 <TextBlock Text="{Binding DueDate, StringFormat='{}{0:MMM dd, yyyy}'}"
                                                            FontFamily="{StaticResource NeoFontFamily}"
                                                            FontSize="{StaticResource NeoFontLabelSmall}"
-                                                           Foreground="#888888"/>
+                                                           Foreground="{StaticResource NeoSubtext}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DockPanel>
@@ -417,7 +443,7 @@
                         <TextBlock Text="No tasks due today"
                                    FontFamily="{StaticResource NeoFontFamily}"
                                    FontSize="{StaticResource NeoFontBody}"
-                                   Foreground="#888888"
+                                   Foreground="{StaticResource NeoSubtext}"
                                    HorizontalAlignment="Center"/>
                         <TextBlock Text="Enjoy your free time or plan ahead!"
                                    FontFamily="{StaticResource NeoFontFamily}"
@@ -427,6 +453,16 @@
                                    Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
+
+                <!-- "View all →" link -->
+                <TextBlock Text="View all →"
+                           FontFamily="{StaticResource NeoFontFamily}"
+                           FontSize="{StaticResource NeoFontBody}"
+                           Foreground="{StaticResource NeoAccentBlue}"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Right"
+                           Margin="0,8,0,0"
+                           Cursor="Hand"/>
             </StackPanel>
 
         </Grid>

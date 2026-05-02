@@ -17,6 +17,8 @@
     <SolidColorBrush x:Key="NeoTextLight"     Color="#F5F5F0"/>
     <SolidColorBrush x:Key="NeoCardBg"        Color="#FFFFFF"/>
     <SolidColorBrush x:Key="NeoInputBg"       Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="NeoAccentPurple"   Color="#9B59B6"/>
+    <SolidColorBrush x:Key="NeoSubtext"        Color="#888888"/>
 
     <!-- ============================================================ -->
     <!-- FONT SIZE HIERARCHY                                           -->
