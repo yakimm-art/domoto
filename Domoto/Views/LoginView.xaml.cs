@@ -11,7 +11,6 @@ namespace Domoto.Views
         {
             InitializeComponent();
             
-            // Focus the username field when the view loads
             this.Loaded += (s, e) => 
             {
                 if (UsernameBox != null) Keyboard.Focus(UsernameBox);
@@ -20,7 +19,6 @@ namespace Domoto.Views
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            // Using a traditional 'as' cast instead of pattern matching
             LoginViewModel vm = DataContext as LoginViewModel;
             if (vm != null)
             {
