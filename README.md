@@ -2,7 +2,7 @@
 
 A WPF desktop task management application built with C#, MVVM pattern, and a neobrutalism UI theme. Manage tasks with priorities, categories, due dates, filtering, and CSV export.
 
-## Screenshots
+## Screenshots/Images
 
 The app features a dark sidebar, colorful dashboard cards, and bold neobrutalism styling with hard shadows and vivid accents.
 
