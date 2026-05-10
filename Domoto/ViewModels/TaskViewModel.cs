@@ -217,6 +217,7 @@ namespace Domoto.ViewModels
         public ICommand ClearFiltersCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
         public ICommand FocusSearchCommand { get; private set; }
+        public ICommand EscapeCommand { get; private set; }
 
         public event Action LogoutRequested;
         public event Action FocusSearchRequested;
@@ -245,6 +246,7 @@ namespace Domoto.ViewModels
             ClearFiltersCommand = new RelayCommand(ExecuteClearFilters);
             RefreshCommand = new RelayCommand(o => LoadTasks());
             FocusSearchCommand = new RelayCommand(o => { if (FocusSearchRequested != null) FocusSearchRequested(); });
+            EscapeCommand = new RelayCommand(ExecuteEscape);
 
             LoadTasks();
         }
@@ -500,6 +502,29 @@ namespace Domoto.ViewModels
             FilterCategory = "All";
             FilterStatus = "All";
             SortBy = "Due Date";
+        }
+
+        private void ExecuteEscape(object parameter)
+        {
+            bool hasContent = !string.IsNullOrWhiteSpace(TaskTitle) ||
+                              !string.IsNullOrWhiteSpace(TaskDescription) ||
+                              IsEditing;
+
+            if (hasContent)
+            {
+                var result = MessageBox.Show(
+                    "Discard changes to the current form?",
+                    "Discard changes",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                    ClearForm();
+            }
+            else
+            {
+                ClearForm();
+            }
         }
 
         private void UpdateSummary()

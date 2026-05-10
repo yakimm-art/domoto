@@ -15,6 +15,7 @@
                     CommandParameter="{Binding SelectedTask}"/>
         <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
         <KeyBinding Modifiers="Control" Key="F" Command="{Binding FocusSearchCommand}"/>
+        <KeyBinding Key="Escape" Command="{Binding EscapeCommand}"/>
     </UserControl.InputBindings>
 
     <Grid Background="{DynamicResource AppBg}">
@@ -114,6 +115,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2"><TextBlock Text="Ctrl+N" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
                                 <TextBlock Grid.Row="0" Grid.Column="2" Text="New task" Style="{StaticResource AppMuted}" VerticalAlignment="Center"/>
@@ -129,6 +131,8 @@
                                 <TextBlock Grid.Row="5" Grid.Column="2" Text="Focus search" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
                                 <Border Grid.Row="6" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="F5" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
                                 <TextBlock Grid.Row="6" Grid.Column="2" Text="Refresh tasks" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="7" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Esc" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="7" Grid.Column="2" Text="Discard / clear form" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
                             </Grid>
                         </StackPanel>
                     </Border>
