@@ -8,7 +8,7 @@ namespace Domoto.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool b && b ? "completed" : "not completed";
+            return (value is bool && (bool)value) ? "completed" : "not completed";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
