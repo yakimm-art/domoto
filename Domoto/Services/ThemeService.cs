@@ -1,9 +1,10 @@
 using System;
-using System.Linq;
-using System.Windows;
 
 namespace Domoto.Services
 {
+    /// <summary>
+    /// Represents available application themes.
+    /// </summary>
     public enum AppTheme
     {
         Light,
@@ -11,9 +12,10 @@ namespace Domoto.Services
     }
 
     /// <summary>
-    /// Swaps the active palette dictionary at runtime.
-    /// The palette dictionary is expected to be the LAST merged dictionary in App.Resources,
-    /// so its brush keys win over the base NeobrutalistTheme.
+    /// Lightweight theme service used by the UI to track and toggle the current theme.
+    /// Only manages an in-memory theme state to satisfy existing callers in the project.
+    /// If you have theme resource dictionaries, extend `Apply` to swap resource dictionaries
+    /// on `Application.Current.Resources`.
     /// </summary>
     public static class ThemeService
     {
