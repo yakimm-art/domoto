@@ -160,6 +160,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(ProjectDir)packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\x86\SQLite.Interop.dll"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+  </Target>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXAML\v4.0\Microsoft.Windows.XAML.targets" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\WindowsXAML\v4.0\Microsoft.Windows.XAML.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
