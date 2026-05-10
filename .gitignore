@@ -3,7 +3,8 @@
 [Oo]bj/
 
 # NuGet packages
-packages/
+# (packages/ intentionally committed so the project builds without
+#  requiring a nuget.exe restore)
 *.nupkg
 nuget.exe
 # Stray SQLite DLL folder sometimes dropped in the repo root
