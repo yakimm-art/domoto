@@ -128,20 +128,53 @@ namespace Domoto.Services
 
         public User AuthenticateUser(string username, string password)
         {
-            string hash = PasswordHelper.HashPassword(password);
+            // Load user by username first so we can verify + rehash if needed
+            User user = LoadUserByUsername(username);
+            if (user == null) return null;
+            if (!PasswordHelper.VerifyPassword(password, user.PasswordHash)) return null;
+
+            // Upgrade legacy SHA-256 hash to PBKDF2 on successful login
+            if (PasswordHelper.NeedsRehash(user.PasswordHash))
+                UpdatePasswordHash(user.Id, PasswordHelper.HashPassword(password));
+
+            // Clear hash before returning — callers don't need it
+            user.PasswordHash = null;
+            return user;
+        }
+
+        // Loads a full user row including PasswordHash for auth purposes
+        private User LoadUserByUsername(string username)
+        {
             using (var conn = Open())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT * FROM Users WHERE Username = @u AND PasswordHash = @p;";
+                cmd.CommandText = "SELECT * FROM Users WHERE Username = @u;";
                 cmd.Parameters.AddWithValue("@u", username);
-                cmd.Parameters.AddWithValue("@p", hash);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
-                        return ReadUser(reader);
+                        return new User
+                        {
+                            Id           = Convert.ToInt32(reader["Id"]),
+                            Username     = reader["Username"].ToString(),
+                            Role         = reader["Role"].ToString(),
+                            PasswordHash = reader["PasswordHash"].ToString()
+                        };
                 }
             }
             return null;
+        }
+
+        private void UpdatePasswordHash(int userId, string newHash)
+        {
+            using (var conn = Open())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "UPDATE Users SET PasswordHash = @p WHERE Id = @id;";
+                cmd.Parameters.AddWithValue("@p", newHash);
+                cmd.Parameters.AddWithValue("@id", userId);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public bool RegisterUser(string username, string password, string role = "User")
