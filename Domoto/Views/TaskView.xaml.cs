@@ -18,7 +18,7 @@ namespace Domoto.Views
             }
             else
             {
-                FormPanelColumn.Width = new GridLength(320);
+                FormPanelColumn.Width = new GridLength(340);
             }
         }
     }
