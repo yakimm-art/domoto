@@ -1,0 +1,4 @@
+<Application.Resources>
+  <!-- other resources -->
+  <local:CompletionVerbalizer x:Key="CompletionVerbalizer"/>
+</Application.Resources>

@@ -1,0 +1,531 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ======================================================== -->
+    <!-- TYPOGRAPHY TOKENS                                         -->
+    <!-- ======================================================== -->
+    <FontFamily x:Key="AppFont">Segoe UI</FontFamily>
+    <sys:Double x:Key="AppFontDisplay">28</sys:Double>
+    <sys:Double x:Key="AppFontH1">22</sys:Double>
+    <sys:Double x:Key="AppFontH2">18</sys:Double>
+    <sys:Double x:Key="AppFontH3">15</sys:Double>
+    <sys:Double x:Key="AppFontBody">13</sys:Double>
+    <sys:Double x:Key="AppFontSmall">12</sys:Double>
+    <sys:Double x:Key="AppFontXS">11</sys:Double>
+
+    <!-- ======================================================== -->
+    <!-- CARD                                                      -->
+    <!-- Soft surface with a 1px border and mild rounded corners.  -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppCard" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- Slightly elevated card (used for sub-surfaces) -->
+    <Style x:Key="AppCardSubtle" TargetType="Border" BasedOn="{StaticResource AppCard}">
+        <Setter Property="Background" Value="{DynamicResource AppElevated}"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- INPUT: TextBox                                            -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppInput" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource AppText}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      VerticalAlignment="Center"
+                                      Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush"
+                                    Value="{DynamicResource AppBorderStrong}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush"
+                                    Value="{DynamicResource AppAccent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Multiline variant (for descriptions) -->
+    <Style x:Key="AppInputMultiline" TargetType="TextBox" BasedOn="{StaticResource AppInput}">
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="MinHeight" Value="80"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- INPUT: PasswordBox                                        -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppPassword" TargetType="PasswordBox">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource AppText}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      VerticalAlignment="Center"
+                                      Focusable="False"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush"
+                                    Value="{DynamicResource AppBorderStrong}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush"
+                                    Value="{DynamicResource AppAccent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- INPUT: ComboBox (simple flat look)                        -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppCombo" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- INPUT: DatePicker                                         -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppDatePicker" TargetType="DatePicker">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- BUTTON: Primary (accent)                                  -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppPrimaryButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="16,9"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppAccentText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppAccent}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background"
+                                    Value="{DynamicResource AppAccentHover}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- BUTTON: Secondary (outline) -->
+    <Style x:Key="AppSecondaryButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background"
+                                    Value="{DynamicResource AppHover}"/>
+                            <Setter TargetName="bd" Property="BorderBrush"
+                                    Value="{DynamicResource AppBorderStrong}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- BUTTON: Ghost / Link -->
+    <Style x:Key="AppGhostButton" TargetType="Button" BasedOn="{StaticResource AppSecondaryButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppAccent}"/>
+    </Style>
+
+    <!-- BUTTON: Danger -->
+    <Style x:Key="AppDangerButton" TargetType="Button" BasedOn="{StaticResource AppPrimaryButton}">
+        <Setter Property="Background" Value="{DynamicResource AppDanger}"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- FIELD LABEL                                               -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppFieldLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+        <Setter Property="Margin" Value="0,0,0,6"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- CHECKBOX                                                  -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppCheckBox" TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="box"
+                                Width="18" Height="18"
+                                CornerRadius="5"
+                                Background="{DynamicResource AppSurface}"
+                                BorderBrush="{DynamicResource AppBorderStrong}"
+                                BorderThickness="1.5"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="check"
+                                       Text="✓" FontSize="12" FontWeight="Bold"
+                                       Foreground="Transparent"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="0,-1,0,0"/>
+                        </Border>
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="box" Property="BorderBrush"
+                                    Value="{DynamicResource AppAccent}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="box" Property="Background"
+                                    Value="{DynamicResource AppAccent}"/>
+                            <Setter TargetName="box" Property="BorderBrush"
+                                    Value="{DynamicResource AppAccent}"/>
+                            <Setter TargetName="check" Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- HEADING + BODY text                                       -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppH1" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+    </Style>
+    <Style x:Key="AppH2" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+    </Style>
+    <Style x:Key="AppH3" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+    </Style>
+    <Style x:Key="AppBody" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+    </Style>
+    <Style x:Key="AppMuted" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- ELEVATED CARD (subtle drop shadow + hover lift)           -->
+    <!-- Uses DropShadowEffect so borders breathe instead of being -->
+    <!-- flat rectangles.                                          -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppCardElevated" TargetType="Border" BasedOn="{StaticResource AppCard}">
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="16"
+                                  ShadowDepth="2"
+                                  Direction="270"
+                                  Opacity="0.08"
+                                  Color="#000000"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Hover-interactive card (slight border emphasis on mouse over) -->
+    <Style x:Key="AppCardHover" TargetType="Border" BasedOn="{StaticResource AppCard}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource AppBorderStrong}"/>
+                <Setter Property="Background" Value="{DynamicResource AppElevated}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- ICON BUTTON (square, centered glyph, ghost background)    -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppIconButton" TargetType="Button">
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="8">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background"
+                                    Value="{DynamicResource AppHover}"/>
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource AppText}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- SCROLLBAR (thin, rounded thumb)                           -->
+    <!-- Attach via ScrollViewer.Style="{StaticResource AppScrollViewer}" -->
+    <!-- ======================================================== -->
+    <Style x:Key="AppScrollThumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border x:Name="bd"
+                            Background="{DynamicResource AppBorderStrong}"
+                            CornerRadius="4"
+                            Opacity="0.5"
+                            Margin="2,0"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.85"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="AppVerticalScrollBar" TargetType="ScrollBar">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="MinWidth" Value="8"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource AppScrollThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AppHorizontalScrollBar" TargetType="ScrollBar">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="MinHeight" Value="8"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" IsDirectionReversed="False">
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource AppScrollThumb}"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AppScrollViewer" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
+                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                   Grid.Column="1" Grid.Row="0"
+                                   Style="{StaticResource AppVerticalScrollBar}"
+                                   Value="{TemplateBinding VerticalOffset}"
+                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                   Grid.Column="0" Grid.Row="1"
+                                   Orientation="Horizontal"
+                                   Style="{StaticResource AppHorizontalScrollBar}"
+                                   Value="{TemplateBinding HorizontalOffset}"
+                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================== -->
+    <!-- TOOLTIP                                                   -->
+    <!-- ======================================================== -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{DynamicResource AppText}"/>
+        <Setter Property="Foreground" Value="{DynamicResource AppSurface}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
