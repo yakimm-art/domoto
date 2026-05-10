@@ -507,6 +507,11 @@ namespace Domoto.ViewModels
 
         private void CheckDueSoonNotifications()
         {
+            // TODO: Optional "summary on open" feature - currently disabled by default
+            // Notifications are now handled by NotificationService background timer
+            // Uncomment below to show a summary when Task_View opens:
+            
+            /*
             var dueSoon = AllTasks.Where(t => t.IsDueSoon).ToList();
             if (dueSoon.Count > 0)
             {
@@ -516,6 +521,7 @@ namespace Domoto.ViewModels
 
                 MessageBox.Show(msg, "Due Soon Reminder", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            */
         }
     }
 }

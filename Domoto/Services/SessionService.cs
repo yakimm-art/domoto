@@ -19,6 +19,8 @@ namespace Domoto.Services
         public static void Logout()
         {
             CurrentUser = null;
+            // Reset notification tracking on logout
+            NotificationService.Instance.Reset();
         }
     }
 }
