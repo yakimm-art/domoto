@@ -4,591 +4,518 @@
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
     SizeChanged="TaskView_SizeChanged">
 
-    <Grid Background="{StaticResource NeoBg}">
+    <Grid Background="{DynamicResource AppBg}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition x:Name="FormPanelColumn" Width="340"/>
+            <ColumnDefinition x:Name="FormPanelColumn" Width="380"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ========================================================= -->
-        <!-- LEFT: Main content area                                    -->
-        <!-- ========================================================= -->
-        <Grid Grid.Column="0" Margin="32,24,24,24">
+        <!-- ================================================= -->
+        <!-- LEFT                                               -->
+        <!-- ================================================= -->
+        <Grid Grid.Column="0" Margin="36,30,26,30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!-- Header: title + search -->
-                <RowDefinition Height="Auto"/>  <!-- Day strip -->
-                <RowDefinition Height="Auto"/>  <!-- Today label + filters -->
-                <RowDefinition Height="*"/>     <!-- Task card grid -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- =================================================== -->
-            <!-- HEADER: "My Tasks" + Search                          -->
-            <!-- =================================================== -->
-            <Grid Grid.Row="0" Margin="0,0,0,20">
+            <!-- HEADER -->
+            <Grid Grid.Row="0" Margin="0,0,0,22">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Border Background="{DynamicResource AppAccentSubtle}"
+                            CornerRadius="999" Padding="10,4"
+                            HorizontalAlignment="Left" Margin="0,0,0,10">
+                        <TextBlock Text="Workspace"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppAccent}"/>
+                    </Border>
+                    <TextBlock Text="My tasks"
+                               FontFamily="{DynamicResource AppFont}"
+                               FontSize="28" FontWeight="Bold"
+                               Foreground="{DynamicResource AppText}"/>
+                    <TextBlock Text="Plan, prioritize, and track everything in one place."
+                               Style="{StaticResource AppMuted}"
+                               Margin="0,3,0,0"/>
+                </StackPanel>
 
-                <!-- Big teal title — matches the "My Task" style in the reference -->
-                <TextBlock Grid.Column="0"
-                           Text="My Tasks"
-                           FontFamily="{StaticResource NeoFontFamily}"
-                           FontSize="34"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource NeoAccentTeal}"
-                           VerticalAlignment="Center"/>
+                <Button Grid.Column="1"
+                        Command="{Binding AddTaskCommand}"
+                        Style="{StaticResource AppPrimaryButton}"
+                        VerticalAlignment="Center"
+                        Padding="18,11">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="＋" FontSize="15" FontWeight="Bold"
+                                   Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="New task" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-                <!-- Rounded search bar -->
-                <Border Grid.Column="2"
-                        Background="{StaticResource NeoCardBg}"
-                        BorderBrush="#E0E0D8"
+            <!-- STAT PILLS -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,22">
+                <Border Background="{DynamicResource AppSurface}"
+                        BorderBrush="{DynamicResource AppBorder}"
                         BorderThickness="1"
-                        CornerRadius="20"
-                        Padding="14,8"
-                        Width="280"
-                        VerticalAlignment="Center">
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Left"
-                                   Text="🔍"
-                                   FontSize="12"
-                                   Foreground="{StaticResource NeoSubtext}"
+                        CornerRadius="999" Padding="14,7"
+                        Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Total"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppTextMuted}"
                                    VerticalAlignment="Center"
                                    Margin="0,0,8,0"/>
-                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                 FontSize="13"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Padding="0"
-                                 VerticalAlignment="Center"
-                                 AutomationProperties.Name="Search tasks"
-                                 ToolTip="Search by title, description, or category"/>
-                    </DockPanel>
+                        <TextBlock Text="{Binding TotalTasks}"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="12" FontWeight="Bold"
+                                   Foreground="{DynamicResource AppText}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Border>
-            </Grid>
+                <Border Background="{DynamicResource AppSuccessSubtle}"
+                        CornerRadius="999" Padding="14,7" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="7" Height="7" Fill="{DynamicResource AppSuccess}"
+                                 VerticalAlignment="Center" Margin="0,0,7,0"/>
+                        <TextBlock FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppSuccess}"
+                                   VerticalAlignment="Center">
+                            <Run Text="Done "/><Run Text="{Binding CompletedTasks, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Background="{DynamicResource AppWarningSubtle}"
+                        CornerRadius="999" Padding="14,7" Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="7" Height="7" Fill="{DynamicResource AppWarning}"
+                                 VerticalAlignment="Center" Margin="0,0,7,0"/>
+                        <TextBlock FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppWarning}"
+                                   VerticalAlignment="Center">
+                            <Run Text="Pending "/><Run Text="{Binding PendingTasks, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Background="{DynamicResource AppDangerSubtle}"
+                        CornerRadius="999" Padding="14,7">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="7" Height="7" Fill="{DynamicResource AppDanger}"
+                                 VerticalAlignment="Center" Margin="0,0,7,0"/>
+                        <TextBlock FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppDanger}"
+                                   VerticalAlignment="Center">
+                            <Run Text="Overdue "/><Run Text="{Binding OverdueTasks, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
 
-            <!-- =================================================== -->
-            <!-- DAY STRIP — decorative weekly pills                  -->
-            <!-- =================================================== -->
-            <Border Grid.Row="1" Margin="0,0,0,20"
-                    Background="{StaticResource NeoCardBg}"
-                    BorderBrush="#E0E0D8"
-                    BorderThickness="1"
-                    CornerRadius="16"
-                    Padding="12,10">
-                <ItemsControl>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Rows="1"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+            <!-- FILTER BAR -->
+            <Border Grid.Row="2" Style="{StaticResource AppCardElevated}" Padding="16" Margin="0,0,0,18">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <!-- Active day (dark pill) -->
-                    <Border Background="{StaticResource NeoBorder}"
-                            CornerRadius="12"
-                            Padding="4,8"
-                            Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="16" FontSize="15" FontWeight="Bold"
-                                       Foreground="White" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Mon" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="White" Opacity="0.8"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0"
+                                Background="{DynamicResource AppElevated}"
+                                BorderBrush="{DynamicResource AppBorder}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,0">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="🔍"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource AppTextMuted}"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         FontFamily="{DynamicResource AppFont}"
+                                         FontSize="13"
+                                         Height="36"
+                                         Background="Transparent"
+                                         Foreground="{DynamicResource AppText}"
+                                         CaretBrush="{DynamicResource AppText}"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         Padding="0"
+                                         ToolTip="Search title, description, or category"/>
+                            </DockPanel>
+                        </Border>
+
+                        <Button Grid.Column="1"
+                                Content="Clear"
+                                Command="{Binding ClearFiltersCommand}"
+                                Style="{StaticResource AppSecondaryButton}"
+                                Margin="10,0,0,0"/>
+                        <Button Grid.Column="2"
+                                Command="{Binding ExportCsvCommand}"
+                                Style="{StaticResource AppSecondaryButton}"
+                                Margin="8,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="⇣" FontSize="13" Margin="0,0,6,0"/>
+                                <TextBlock Text="Export"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Priority" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding FilterPriorities}"
+                                      SelectedItem="{Binding FilterPriority}"/>
                         </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="17" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Tue" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Category" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding FilterCategories}"
+                                      SelectedItem="{Binding FilterCategory}"/>
                         </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="18" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Wed" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Status" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding FilterStatuses}"
+                                      SelectedItem="{Binding FilterStatus}"/>
                         </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="19" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Thu" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                        <StackPanel Grid.Column="6">
+                            <TextBlock Text="Sort by" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding SortOptions}"
+                                      SelectedItem="{Binding SortBy}"/>
                         </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="20" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Fri" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="21" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Sat" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Background="Transparent" CornerRadius="12"
-                            Padding="4,8" Margin="4,0">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="22" FontSize="15" FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Sun" FontSize="10" FontWeight="SemiBold"
-                                       Foreground="{StaticResource NeoSubtext}"
-                                       HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </ItemsControl>
+                    </Grid>
+                </Grid>
             </Border>
 
-            <!-- =================================================== -->
-            <!-- "TODAY'S TASKS" HEADER + SUMMARY BADGES + FILTERS    -->
-            <!-- =================================================== -->
-            <Grid Grid.Row="2" Margin="0,0,0,16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <!-- TASK LIST -->
+            <ListBox Grid.Row="3"
+                     ItemsSource="{Binding TasksView}"
+                     SelectedItem="{Binding SelectedTask}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     HorizontalContentAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,0,10"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
-                <!-- Row 1: title + summary badges -->
-                <Grid Grid.Row="0" Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <!-- Priority accent bar on left edge -->
+                            <Border Width="4" HorizontalAlignment="Left"
+                                    CornerRadius="2,0,0,2"
+                                    Margin="0,2,0,2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{DynamicResource AppSuccess}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Priority}" Value="High">
+                                                <Setter Property="Background" Value="{DynamicResource AppDanger}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Priority}" Value="Medium">
+                                                <Setter Property="Background" Value="{DynamicResource AppWarning}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
 
-                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="Today's Tasks"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontHeadingSmall}"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource NeoText}"/>
-                        <TextBlock Text="{Binding TotalTasks, StringFormat={}{0} tasks in your workspace}"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontLabel}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   Margin="0,2,0,0"/>
-                    </StackPanel>
+                            <Border x:Name="Card"
+                                    Background="{DynamicResource AppSurface}"
+                                    BorderBrush="{DynamicResource AppBorder}"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="20,16,18,16"
+                                    Margin="4,0,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource AppBorderStrong}"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="12"
+                                                                          ShadowDepth="2"
+                                                                          Direction="270"
+                                                                          Opacity="0.08"
+                                                                          Color="#000000"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
 
-                    <!-- Compact summary pills -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="#E8F5E9" CornerRadius="10" Padding="10,4" Margin="0,0,6,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource NeoAccentGreen}"
-                                         VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock FontSize="11" FontWeight="SemiBold"
-                                           Foreground="{StaticResource NeoAccentGreen}">
-                                    <Run Text="Done "/><Run Text="{Binding CompletedTasks, Mode=OneWay}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                        <Border Background="#FFF3E0" CornerRadius="10" Padding="10,4" Margin="0,0,6,0">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource NeoAccentOrange}"
-                                         VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock FontSize="11" FontWeight="SemiBold"
-                                           Foreground="{StaticResource NeoAccentOrange}">
-                                    <Run Text="Pending "/><Run Text="{Binding PendingTasks, Mode=OneWay}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                        <Border Background="#FFEBEE" CornerRadius="10" Padding="10,4">
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse Width="8" Height="8" Fill="{StaticResource NeoAccentPink}"
-                                         VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <TextBlock FontSize="11" FontWeight="SemiBold"
-                                           Foreground="{StaticResource NeoAccentPink}">
-                                    <Run Text="Overdue "/><Run Text="{Binding OverdueTasks, Mode=OneWay}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                <!-- Row 2: compact filter row -->
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                                    <CheckBox Grid.Column="0"
+                                              Style="{StaticResource AppCheckBox}"
+                                              IsChecked="{Binding IsCompleted, Mode=OneWay}"
+                                              VerticalAlignment="Top"
+                                              Margin="0,3,14,0"
+                                              Command="{Binding DataContext.ToggleCompleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              CommandParameter="{Binding}"/>
 
-                    <ComboBox Grid.Column="0" Margin="0,0,6,0"
-                              ItemsSource="{Binding FilterPriorities}"
-                              SelectedItem="{Binding FilterPriority}"
-                              FontSize="12" ToolTip="Priority"/>
-                    <ComboBox Grid.Column="1" Margin="6,0,6,0"
-                              ItemsSource="{Binding FilterCategories}"
-                              SelectedItem="{Binding FilterCategory}"
-                              FontSize="12" ToolTip="Category"/>
-                    <ComboBox Grid.Column="2" Margin="6,0,6,0"
-                              ItemsSource="{Binding FilterStatuses}"
-                              SelectedItem="{Binding FilterStatus}"
-                              FontSize="12" ToolTip="Status"/>
-                    <ComboBox Grid.Column="3" Margin="6,0,6,0"
-                              ItemsSource="{Binding SortOptions}"
-                              SelectedItem="{Binding SortBy}"
-                              FontSize="12" ToolTip="Sort by"/>
-                    <Button Grid.Column="4" Content="Clear"
-                            Command="{Binding ClearFiltersCommand}"
-                            Padding="10,6" Margin="6,0,6,0" FontSize="11"
-                            Background="{StaticResource NeoCardBg}"/>
-                    <Button Grid.Column="5" Content="📤 Export"
-                            Command="{Binding ExportCsvCommand}"
-                            Padding="10,6" Margin="0" FontSize="11"
-                            Background="{StaticResource NeoAccentTeal}" Foreground="White"/>
-                </Grid>
-            </Grid>
-
-            <!-- =================================================== -->
-            <!-- TASK CARDS — 2-column pastel grid                    -->
-            <!-- =================================================== -->
-            <ScrollViewer Grid.Row="3"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          Style="{StaticResource NeoScrollViewer}">
-                <StackPanel>
-                    <!-- Card grid — category drives the pastel tint, priority drives accent bar -->
-                    <ListBox ItemsSource="{Binding TasksView}"
-                             SelectedItem="{Binding SelectedTask}"
-                             Background="Transparent" BorderThickness="0"
-                             HorizontalContentAlignment="Stretch"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                             AutomationProperties.Name="Task list">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="2"/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0,0,12,12"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <ContentPresenter/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid x:Name="CardRoot">
-                                    <!-- Hard shadow (neobrutalism accent kept) -->
-                                    <Border Background="{StaticResource NeoBorder}"
-                                            CornerRadius="14" Opacity="0.9">
-                                        <Border.RenderTransform>
-                                            <TranslateTransform X="3" Y="3"/>
-                                        </Border.RenderTransform>
-                                    </Border>
-
-                                    <!-- Main pastel card (tint driven by category) -->
-                                    <Border BorderBrush="{StaticResource NeoBorder}"
-                                            BorderThickness="2"
-                                            CornerRadius="14"
-                                            Padding="16,14">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="#FFF9E6"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Category}" Value="Work">
-                                                        <Setter Property="Background" Value="#E3F2FD"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Category}" Value="Personal">
-                                                        <Setter Property="Background" Value="#FCE4EC"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Category}" Value="Other">
-                                                        <Setter Property="Background" Value="#E8F5E9"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>  <!-- title row -->
-                                                <RowDefinition Height="Auto"/>  <!-- description -->
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="Auto"/>  <!-- footer -->
-                                            </Grid.RowDefinitions>
-
-                                            <!-- Title + action menu -->
-                                            <Grid Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <!-- Complete checkbox -->
-                                                <CheckBox Grid.Column="0"
-                                                          IsChecked="{Binding IsCompleted, Mode=OneWay}"
-                                                          VerticalAlignment="Center"
-                                                          Margin="0,0,8,0"
-                                                          Command="{Binding DataContext.ToggleCompleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                          CommandParameter="{Binding}"
-                                                          AutomationProperties.Name="Mark task complete"/>
-
-                                                <TextBlock Grid.Column="1"
-                                                           Text="{Binding Title}"
-                                                           FontSize="14" FontWeight="Bold"
-                                                           Foreground="{StaticResource NeoText}"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           VerticalAlignment="Center"
-                                                           TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethrough}}"/>
-
-                                                <!-- Menu dots -->
-                                                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                                    <Button Content="✏️" ToolTip="Edit" Cursor="Hand"
-                                                            Background="Transparent" BorderThickness="0"
-                                                            FontSize="12" Padding="4,2"
-                                                            Command="{Binding DataContext.EditTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                            CommandParameter="{Binding}"
-                                                            AutomationProperties.Name="Edit task"/>
-                                                    <Button Content="🗑️" ToolTip="Delete" Cursor="Hand"
-                                                            Background="Transparent" BorderThickness="0"
-                                                            FontSize="12" Padding="4,2"
-                                                            Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                            CommandParameter="{Binding}"
-                                                            AutomationProperties.Name="Delete task"/>
-                                                </StackPanel>
-                                            </Grid>
-
-                                            <!-- Description subtitle -->
-                                            <TextBlock Grid.Row="1"
-                                                       Text="{Binding Description}"
-                                                       FontSize="12"
-                                                       Foreground="#555555"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       TextWrapping="Wrap"
-                                                       MaxHeight="34"
-                                                       Margin="0,6,0,10"/>
-
-                                            <!-- Footer: due date + priority pill -->
-                                            <Grid Grid.Row="3">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <StackPanel Grid.Column="0" Orientation="Horizontal"
-                                                            VerticalAlignment="Center">
-                                                    <TextBlock Text="📅" FontSize="11"
-                                                               Foreground="{StaticResource NeoSubtext}"
-                                                               Margin="0,0,4,0"/>
-                                                    <TextBlock FontSize="11" FontWeight="SemiBold">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="{StaticResource NeoSubtext}"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="14" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource AppText}"
+                                                   TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethrough}}"/>
+                                        <TextBlock Text="{Binding Description}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource AppTextMuted}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Margin="0,3,0,10"/>
+                                        <WrapPanel>
+                                            <Border CornerRadius="999" Padding="9,3" Margin="0,0,6,6"
+                                                    Background="{DynamicResource AppAccentSubtle}">
+                                                <TextBlock Text="{Binding Category}"
+                                                           FontFamily="{DynamicResource AppFont}"
+                                                           FontSize="11" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource AppAccent}"/>
+                                            </Border>
+                                            <Border CornerRadius="999" Padding="9,3" Margin="0,0,6,6">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource AppSuccessSubtle}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Priority}" Value="High">
+                                                                <Setter Property="Background" Value="{DynamicResource AppDangerSubtle}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Priority}" Value="Medium">
+                                                                <Setter Property="Background" Value="{DynamicResource AppWarningSubtle}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Ellipse Width="5" Height="5"
+                                                             VerticalAlignment="Center"
+                                                             Margin="0,0,5,0">
+                                                        <Ellipse.Style>
+                                                            <Style TargetType="Ellipse">
+                                                                <Setter Property="Fill" Value="{DynamicResource AppSuccess}"/>
                                                                 <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsOverdue}" Value="True">
-                                                                        <Setter Property="Foreground" Value="{StaticResource NeoAccentPink}"/>
+                                                                    <DataTrigger Binding="{Binding Priority}" Value="High">
+                                                                        <Setter Property="Fill" Value="{DynamicResource AppDanger}"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Priority}" Value="Medium">
+                                                                        <Setter Property="Fill" Value="{DynamicResource AppWarning}"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
-                                                        </TextBlock.Style>
-                                                        <Run Text="{Binding DueDate, StringFormat='{}{0:MMM dd, hh:mm tt}', Mode=OneWay}"/>
-                                                    </TextBlock>
-                                                </StackPanel>
-
-                                                <!-- Priority pill -->
-                                                <Border Grid.Column="1" CornerRadius="10"
-                                                        Padding="8,3">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="#E8F5E9"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Priority}" Value="High">
-                                                                    <Setter Property="Background" Value="#FFEBEE"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Priority}" Value="Medium">
-                                                                    <Setter Property="Background" Value="#FFF8E1"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Priority}" Value="Low">
-                                                                    <Setter Property="Background" Value="#E8F5E9"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
-                                                    <TextBlock FontSize="10" FontWeight="Bold">
+                                                        </Ellipse.Style>
+                                                    </Ellipse>
+                                                    <TextBlock FontFamily="{DynamicResource AppFont}"
+                                                               FontSize="11" FontWeight="SemiBold">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
-                                                                <Setter Property="Foreground" Value="#388E3C"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AppSuccess}"/>
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding Priority}" Value="High">
-                                                                        <Setter Property="Foreground" Value="#D32F2F"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource AppDanger}"/>
                                                                     </DataTrigger>
                                                                     <DataTrigger Binding="{Binding Priority}" Value="Medium">
-                                                                        <Setter Property="Foreground" Value="#F57C00"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding Priority}" Value="Low">
-                                                                        <Setter Property="Foreground" Value="#388E3C"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource AppWarning}"/>
                                                                     </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </TextBlock.Style>
                                                         <Run Text="{Binding Priority, Mode=OneWay}"/>
                                                     </TextBlock>
-                                                </Border>
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                                </StackPanel>
+                                            </Border>
+                                            <Border CornerRadius="999" Padding="9,3">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource AppElevated}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                                <Setter Property="Background" Value="{DynamicResource AppDangerSubtle}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock FontFamily="{DynamicResource AppFont}" FontSize="11">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource AppDanger}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <Run Text="Due "/><Run Text="{Binding DueDate, StringFormat='{}{0:MMM dd}', Mode=OneWay}"/>
+                                                </TextBlock>
+                                            </Border>
+                                        </WrapPanel>
+                                    </StackPanel>
 
-                    <!-- "+ Add New Task" dashed pill button, mirrors reference -->
-                    <Button Command="{Binding AddTaskCommand}"
-                            Cursor="Hand"
-                            HorizontalAlignment="Center"
-                            Margin="0,4,0,16"
-                            AutomationProperties.Name="Add new task">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Grid>
-                                    <!-- Dashed rounded rectangle outline -->
-                                    <Rectangle x:Name="DashStroke"
-                                               RadiusX="20" RadiusY="20"
-                                               Stroke="{StaticResource NeoSubtext}"
-                                               StrokeThickness="1.5"
-                                               StrokeDashArray="4 3"
-                                               Fill="Transparent"/>
-                                    <TextBlock x:Name="Label"
-                                               Text="+  Add New Task"
-                                               FontSize="13" FontWeight="SemiBold"
-                                               Foreground="{StaticResource NeoSubtext}"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="24,10"/>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <Button Style="{StaticResource AppIconButton}"
+                                                ToolTip="Edit"
+                                                Command="{Binding DataContext.EditTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Content="✎"
+                                                FontSize="14"/>
+                                        <Button Style="{StaticResource AppIconButton}"
+                                                ToolTip="Delete"
+                                                Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Content="🗑"
+                                                FontSize="13"/>
+                                    </StackPanel>
                                 </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="DashStroke" Property="Stroke"
-                                                Value="{StaticResource NeoAccentTeal}"/>
-                                        <Setter TargetName="Label" Property="Foreground"
-                                                Value="{StaticResource NeoAccentTeal}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </StackPanel>
-            </ScrollViewer>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
-        <!-- ========================================================= -->
-        <!-- RIGHT PANEL: Task Form                                     -->
-        <!-- ========================================================= -->
-        <Border Grid.Column="1" Background="{StaticResource NeoCardBg}"
-                BorderBrush="{StaticResource NeoBorder}" BorderThickness="2,0,0,0">
-            <DockPanel>
-                <!-- Teal accent bar at top -->
-                <Border DockPanel.Dock="Top" Height="4"
-                        Background="{StaticResource NeoAccentTeal}"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0"
-                              Style="{StaticResource NeoScrollViewer}">
-                    <StackPanel Margin="24,20,24,24">
-                        <TextBlock Text="{Binding FormTitle}"
-                                   FontSize="{StaticResource NeoFontHeadingSmall}"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource NeoText}"
-                                   Margin="0,0,0,4"/>
-                        <TextBlock Text="Fill in the details and hit save."
-                                   FontSize="{StaticResource NeoFontLabel}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   Margin="0,0,0,20"/>
-
-                        <TextBlock Text="Title" Foreground="{StaticResource NeoText}" FontSize="12"
-                                   FontWeight="SemiBold" Margin="0,0,0,4"/>
-                        <TextBox Text="{Binding TaskTitle, UpdateSourceTrigger=PropertyChanged}"
-                                 FontSize="13" Margin="0,0,0,14"
-                                 AutomationProperties.Name="Task title"/>
-
-                        <TextBlock Text="Description" Foreground="{StaticResource NeoText}" FontSize="12"
-                                   FontWeight="SemiBold" Margin="0,0,0,4"/>
-                        <TextBox Text="{Binding TaskDescription, UpdateSourceTrigger=PropertyChanged}"
-                                 FontSize="13" Margin="0,0,0,14" Height="80"
-                                 TextWrapping="Wrap" AcceptsReturn="True"
-                                 AutomationProperties.Name="Task description"/>
-
-                        <TextBlock Text="Due Date" Foreground="{StaticResource NeoText}" FontSize="12"
-                                   FontWeight="SemiBold" Margin="0,0,0,4"/>
-                        <DatePicker SelectedDate="{Binding TaskDueDate}"
-                                    FontSize="13" Margin="0,0,0,14"
-                                    AutomationProperties.Name="Due date"/>
-
-                        <Grid Margin="0,0,0,14">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="0,0,6,0">
-                                <TextBlock Text="Priority" Foreground="{StaticResource NeoText}" FontSize="12"
-                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                <ComboBox ItemsSource="{Binding Priorities}"
-                                          SelectedItem="{Binding TaskPriority}"
-                                          FontSize="13"
-                                          AutomationProperties.Name="Priority"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="6,0,0,0">
-                                <TextBlock Text="Category" Foreground="{StaticResource NeoText}" FontSize="12"
-                                           FontWeight="SemiBold" Margin="0,0,0,4"/>
-                                <ComboBox ItemsSource="{Binding Categories}"
-                                          SelectedItem="{Binding TaskCategory}"
-                                          FontSize="13"
-                                          AutomationProperties.Name="Category"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <Button Content="💾 Save Task" Command="{Binding SaveTaskCommand}"
-                                Padding="14,10" FontSize="14" FontWeight="Bold" Cursor="Hand"
-                                Background="{StaticResource NeoAccentTeal}" Foreground="White"
-                                Margin="0,8,0,10"
-                                AutomationProperties.Name="Save task"/>
-
-                        <Button Content="Clear" Command="{Binding ClearFormCommand}"
-                                Padding="10,8" FontSize="12" Cursor="Hand"
-                                Background="{StaticResource NeoCardBg}"
-                                AutomationProperties.Name="Clear form"/>
+        <!-- ================================================= -->
+        <!-- RIGHT: Form panel                                  -->
+        <!-- ================================================= -->
+        <Border Grid.Column="1"
+                Background="{DynamicResource AppSurface}"
+                BorderBrush="{DynamicResource AppBorder}"
+                BorderThickness="1,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          Style="{StaticResource AppScrollViewer}">
+                <StackPanel Margin="30,30,30,30">
+                    <!-- Form header with icon -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <Border Width="36" Height="36" CornerRadius="10"
+                                Background="{DynamicResource AppAccentSubtle}"
+                                Margin="0,0,12,0">
+                            <TextBlock FontSize="18" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppAccent}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="＋"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                <Setter Property="Text" Value="✎"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding FormTitle}" Style="{StaticResource AppH2}"/>
+                            <TextBlock Text="Fill out the details below."
+                                       Style="{StaticResource AppMuted}"/>
+                        </StackPanel>
                     </StackPanel>
-                </ScrollViewer>
-            </DockPanel>
+
+                    <Border Height="1" Background="{DynamicResource AppBorder}"
+                            Margin="0,18,0,18"/>
+
+                    <TextBlock Text="Title" Style="{StaticResource AppFieldLabel}"/>
+                    <TextBox Style="{StaticResource AppInput}"
+                             Text="{Binding TaskTitle, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Description" Style="{StaticResource AppFieldLabel}"/>
+                    <TextBox Style="{StaticResource AppInputMultiline}"
+                             Text="{Binding TaskDescription, UpdateSourceTrigger=PropertyChanged}"
+                             Height="100"
+                             Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Due date" Style="{StaticResource AppFieldLabel}"/>
+                    <DatePicker Style="{StaticResource AppDatePicker}"
+                                SelectedDate="{Binding TaskDueDate}"
+                                Margin="0,0,0,16"/>
+
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Priority" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding Priorities}"
+                                      SelectedItem="{Binding TaskPriority}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Category" Style="{StaticResource AppFieldLabel}"/>
+                            <ComboBox Style="{StaticResource AppCombo}"
+                                      ItemsSource="{Binding Categories}"
+                                      SelectedItem="{Binding TaskCategory}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Button Content="Save task"
+                            Command="{Binding SaveTaskCommand}"
+                            Style="{StaticResource AppPrimaryButton}"
+                            HorizontalAlignment="Stretch"
+                            Padding="14,12"
+                            Margin="0,0,0,10"/>
+                    <Button Content="Clear form"
+                            Command="{Binding ClearFormCommand}"
+                            Style="{StaticResource AppSecondaryButton}"
+                            HorizontalAlignment="Stretch"
+                            Padding="14,10"/>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>

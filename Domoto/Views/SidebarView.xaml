@@ -4,280 +4,354 @@
     Width="260"
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Grid Background="{StaticResource NeoSidebarBg}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border Background="{DynamicResource AppSidebarBg}"
+            BorderBrush="{DynamicResource AppSidebarBorder}"
+            BorderThickness="0,0,1,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- App Title with decorative element -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,20,20,12">
-            <TextBlock Text="Domoto"
-                       FontFamily="{StaticResource NeoFontFamily}"
-                       FontSize="{StaticResource NeoFontHeading}"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource NeoTextLight}"/>
-            <TextBlock Text=" ✦"
-                       FontSize="14"
-                       Foreground="{StaticResource NeoAccentTeal}"
-                       VerticalAlignment="Top"
-                       Margin="4,4,0,0"/>
-        </StackPanel>
+            <!-- BRAND -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,22,20,18">
+                <Border Width="32" Height="32" CornerRadius="9" Margin="0,0,10,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="D" Foreground="White"
+                               FontSize="16" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="Domoto"
+                               FontSize="15" FontWeight="Bold"
+                               Foreground="{DynamicResource AppSidebarText}"/>
+                    <TextBlock Text="Workspace"
+                               FontSize="10"
+                               Foreground="{DynamicResource AppSidebarMuted}"
+                               Margin="0,-1,0,0"/>
+                </StackPanel>
+            </StackPanel>
 
-        <!-- Search Bar -->
-        <TextBox Grid.Row="1"
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                 FontFamily="{StaticResource NeoFontFamily}"
-                 FontSize="{StaticResource NeoFontBodySmall}"
-                 Background="#2A2A3D"
-                 Foreground="{StaticResource NeoTextLight}"
-                 BorderBrush="#3A3A50"
-                 BorderThickness="2"
-                 Padding="10,8"
-                 Margin="16,0,16,16"
-                 ToolTip="Search tasks..."
-                 AutomationProperties.Name="Search tasks"/>
+            <!-- SEARCH -->
+            <Border Grid.Row="1" Margin="16,0,16,18"
+                    Background="{DynamicResource AppHover}"
+                    BorderBrush="Transparent"
+                    BorderThickness="1"
+                    CornerRadius="9">
+                <DockPanel Margin="12,0,10,0">
+                    <TextBlock DockPanel.Dock="Left" Text="🔍"
+                               FontSize="11"
+                               Foreground="{DynamicResource AppSidebarMuted}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,8,0"/>
+                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="{DynamicResource AppFont}"
+                             FontSize="12"
+                             Height="34"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             Padding="0"
+                             Foreground="{DynamicResource AppSidebarText}"
+                             CaretBrush="{DynamicResource AppSidebarText}"
+                             VerticalContentAlignment="Center"
+                             ToolTip="Search tasks..."
+                             AutomationProperties.Name="Search tasks"/>
+                </DockPanel>
+            </Border>
 
-        <!-- Navigation Section with gradient overlay -->
-        <Grid Grid.Row="2">
-            <StackPanel Margin="0,4,0,0">
-
-                <!-- Section Header -->
-                <TextBlock Text="NAVIGATION"
-                           FontFamily="{StaticResource NeoFontFamily}"
-                           FontSize="{StaticResource NeoFontLabelSmall}"
-                           FontWeight="Bold"
-                           Foreground="#6C6C8A"
-                           Margin="20,0,20,8"/>
-
-                <!-- Separator line between header and nav items -->
-                <Border Height="1" Background="#3A3A50" Margin="16,0,16,8"/>
+            <!-- NAV -->
+            <StackPanel Grid.Row="2" Margin="0,4,0,0">
+                <TextBlock Text="MENU"
+                           FontFamily="{DynamicResource AppFont}"
+                           FontSize="10" FontWeight="Bold"
+                           Foreground="{DynamicResource AppSidebarMuted}"
+                           Margin="22,4,20,8"/>
 
                 <!-- Home -->
-                <Button Command="{Binding NavigateHomeCommand}" Cursor="Hand" Margin="0,0,0,2">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="NavBorder"
-                                                Background="Transparent"
-                                                BorderThickness="3,0,0,0"
-                                                BorderBrush="Transparent"
-                                                Padding="20,10,16,10">
-                                            <TextBlock Text="🏠  Home"
-                                                       FontFamily="{StaticResource NeoFontFamily}"
-                                                       FontSize="{StaticResource NeoFontBody}"
-                                                       Foreground="{StaticResource NeoTextLight}"/>
+                <Button Command="{Binding NavigateHomeCommand}" Cursor="Hand" Margin="10,1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="rail" Grid.Column="0"
+                                        Background="Transparent"
+                                        CornerRadius="2"
+                                        Margin="0,6,4,6"/>
+                                <Border x:Name="bd" Grid.Column="1"
+                                        Background="Transparent"
+                                        CornerRadius="8"
+                                        Padding="10,9">
+                                    <DockPanel>
+                                        <Border x:Name="iconBg" DockPanel.Dock="Left"
+                                                Width="24" Height="24" CornerRadius="7"
+                                                Background="{DynamicResource AppHover}"
+                                                Margin="0,0,10,0">
+                                            <TextBlock Text="⌂" FontSize="15" FontWeight="Bold"
+                                                       Foreground="{DynamicResource AppSidebarMuted}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Home">
-                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
+                                        <TextBlock Text="Dashboard"
+                                                   Foreground="{DynamicResource AppSidebarText}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="13" FontWeight="Medium"
+                                                   VerticalAlignment="Center"/>
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarHover}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding ActiveNavItem}" Value="Home">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarActive}"/>
+                                    <Setter TargetName="rail" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                    <Setter TargetName="iconBg" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
-                <!-- Tasks with count badge -->
-                <Button Command="{Binding NavigateTasksCommand}" Cursor="Hand" Margin="0,0,0,2">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="NavBorder"
-                                                Background="Transparent"
-                                                BorderThickness="3,0,0,0"
-                                                BorderBrush="Transparent"
-                                                Padding="20,10,16,10">
-                                            <DockPanel>
-                                                <!-- Task count badge on the right -->
-                                                <Border DockPanel.Dock="Right"
-                                                        Background="{StaticResource NeoAccentBlue}"
-                                                        CornerRadius="9"
-                                                        Padding="7,2"
-                                                        VerticalAlignment="Center"
-                                                        Margin="8,0,4,0">
-                                                    <TextBlock Text="6"
-                                                               FontFamily="{StaticResource NeoFontFamily}"
-                                                               FontSize="10" FontWeight="Bold"
-                                                               Foreground="White"
-                                                               HorizontalAlignment="Center"/>
-                                                </Border>
-                                                <TextBlock Text="📋  Tasks"
-                                                           FontFamily="{StaticResource NeoFontFamily}"
-                                                           FontSize="{StaticResource NeoFontBody}"
-                                                           Foreground="{StaticResource NeoTextLight}"/>
-                                            </DockPanel>
+                <!-- Tasks -->
+                <Button Command="{Binding NavigateTasksCommand}" Cursor="Hand" Margin="10,1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="rail" Grid.Column="0"
+                                        Background="Transparent"
+                                        CornerRadius="2"
+                                        Margin="0,6,4,6"/>
+                                <Border x:Name="bd" Grid.Column="1"
+                                        Background="Transparent"
+                                        CornerRadius="8"
+                                        Padding="10,9">
+                                    <DockPanel>
+                                        <Border x:Name="iconBg" DockPanel.Dock="Left"
+                                                Width="24" Height="24" CornerRadius="7"
+                                                Background="{DynamicResource AppHover}"
+                                                Margin="0,0,10,0">
+                                            <TextBlock Text="✓" FontSize="13" FontWeight="Bold"
+                                                       Foreground="{DynamicResource AppSidebarMuted}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Tasks">
-                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
+                                        <TextBlock Text="Tasks"
+                                                   Foreground="{DynamicResource AppSidebarText}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="13" FontWeight="Medium"
+                                                   VerticalAlignment="Center"/>
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarHover}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding ActiveNavItem}" Value="Tasks">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarActive}"/>
+                                    <Setter TargetName="rail" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                    <Setter TargetName="iconBg" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
                 <!-- Profile -->
-                <Button Command="{Binding NavigateProfileCommand}" Cursor="Hand" Margin="0,0,0,2">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="NavBorder"
-                                                Background="Transparent"
-                                                BorderThickness="3,0,0,0"
-                                                BorderBrush="Transparent"
-                                                Padding="20,10,16,10">
-                                            <TextBlock Text="👤  Profile"
-                                                       FontFamily="{StaticResource NeoFontFamily}"
-                                                       FontSize="{StaticResource NeoFontBody}"
-                                                       Foreground="{StaticResource NeoTextLight}"/>
+                <Button Command="{Binding NavigateProfileCommand}" Cursor="Hand" Margin="10,1">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="rail" Grid.Column="0"
+                                        Background="Transparent"
+                                        CornerRadius="2"
+                                        Margin="0,6,4,6"/>
+                                <Border x:Name="bd" Grid.Column="1"
+                                        Background="Transparent"
+                                        CornerRadius="8"
+                                        Padding="10,9">
+                                    <DockPanel>
+                                        <Border x:Name="iconBg" DockPanel.Dock="Left"
+                                                Width="24" Height="24" CornerRadius="7"
+                                                Background="{DynamicResource AppHover}"
+                                                Margin="0,0,10,0">
+                                            <TextBlock Text="◉" FontSize="13" FontWeight="Bold"
+                                                       Foreground="{DynamicResource AppSidebarMuted}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Profile">
-                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
+                                        <TextBlock Text="Profile"
+                                                   Foreground="{DynamicResource AppSidebarText}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="13" FontWeight="Medium"
+                                                   VerticalAlignment="Center"/>
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarHover}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding ActiveNavItem}" Value="Profile">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarActive}"/>
+                                    <Setter TargetName="rail" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                    <Setter TargetName="iconBg" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
 
-                <!-- Admin (visible only when IsAdmin is true) -->
-                <Button Command="{Binding NavigateAdminCommand}" Cursor="Hand" Margin="0,0,0,2"
+                <!-- Admin -->
+                <Button Command="{Binding NavigateAdminCommand}" Cursor="Hand" Margin="10,1"
                         Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVis}}">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="NavBorder"
-                                                Background="Transparent"
-                                                BorderThickness="3,0,0,0"
-                                                BorderBrush="Transparent"
-                                                Padding="20,10,16,10">
-                                            <TextBlock Text="🔧  Admin"
-                                                       FontFamily="{StaticResource NeoFontFamily}"
-                                                       FontSize="{StaticResource NeoFontBody}"
-                                                       Foreground="{StaticResource NeoTextLight}"/>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="rail" Grid.Column="0"
+                                        Background="Transparent"
+                                        CornerRadius="2"
+                                        Margin="0,6,4,6"/>
+                                <Border x:Name="bd" Grid.Column="1"
+                                        Background="Transparent"
+                                        CornerRadius="8"
+                                        Padding="10,9">
+                                    <DockPanel>
+                                        <Border x:Name="iconBg" DockPanel.Dock="Left"
+                                                Width="24" Height="24" CornerRadius="7"
+                                                Background="{DynamicResource AppHover}"
+                                                Margin="0,0,10,0">
+                                            <TextBlock Text="⚙" FontSize="13" FontWeight="Bold"
+                                                       Foreground="{DynamicResource AppSidebarMuted}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
                                         </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding ActiveNavItem}" Value="Admin">
-                                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="{StaticResource NeoAccentBlue}"/>
-                                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A3D"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
+                                        <TextBlock Text="Admin"
+                                                   Foreground="{DynamicResource AppSidebarText}"
+                                                   FontFamily="{DynamicResource AppFont}"
+                                                   FontSize="13" FontWeight="Medium"
+                                                   VerticalAlignment="Center"/>
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarHover}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding ActiveNavItem}" Value="Admin">
+                                    <Setter TargetName="bd" Property="Background"
+                                            Value="{DynamicResource AppSidebarActive}"/>
+                                    <Setter TargetName="rail" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                    <Setter TargetName="iconBg" Property="Background"
+                                            Value="{DynamicResource AppAccent}"/>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
                 </Button>
+
+                <!-- Upgrade promo card -->
+                <Border Margin="16,24,16,0"
+                        Background="{DynamicResource AppAccentSubtle}"
+                        CornerRadius="12"
+                        Padding="14">
+                    <StackPanel>
+                        <TextBlock Text="✦ Pro tip"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="10" FontWeight="Bold"
+                                   Foreground="{DynamicResource AppAccent}"
+                                   Margin="0,0,0,6"/>
+                        <TextBlock Text="Use priorities and due dates to sort your day."
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource AppText}"
+                                   TextWrapping="Wrap"
+                                   LineHeight="16"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
 
-            <!-- Subtle gradient overlay at bottom of nav section -->
-            <Border VerticalAlignment="Bottom" Height="40" IsHitTestVisible="False">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="Transparent" Offset="0"/>
-                        <GradientStop Color="#1E1E2E" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <!-- USER FOOTER -->
+            <Border Grid.Row="3"
+                    BorderBrush="{DynamicResource AppSidebarBorder}"
+                    BorderThickness="0,1,0,0"
+                    Padding="14,12">
+                <DockPanel>
+                    <Button DockPanel.Dock="Right"
+                            Command="{Binding LogoutCommand}"
+                            Style="{StaticResource AppIconButton}"
+                            Content="⎋"
+                            ToolTip="Logout"
+                            FontSize="15"
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="Logout"/>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="36" Height="36" CornerRadius="18"
+                                Margin="0,0,10,0" VerticalAlignment="Center">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                                    <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <TextBlock Text="{Binding CurrentUsername, Converter={StaticResource FirstLetterConverter}}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="14" FontWeight="Bold"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding CurrentUsername}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppSidebarText}"/>
+                            <TextBlock Text="{Binding CurrentRole}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource AppSidebarMuted}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
             </Border>
         </Grid>
-
-        <!-- User Info + Logout at bottom -->
-        <Border Grid.Row="3"
-                BorderBrush="#3A3A50"
-                BorderThickness="0,1,0,0"
-                Padding="16,12">
-            <DockPanel>
-                <Button DockPanel.Dock="Right"
-                        Command="{Binding LogoutCommand}"
-                        Content="Logout"
-                        FontFamily="{StaticResource NeoFontFamily}"
-                        FontSize="{StaticResource NeoFontLabelSmall}"
-                        FontWeight="Bold"
-                        Foreground="{StaticResource NeoAccentPink}"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Cursor="Hand"
-                        VerticalAlignment="Center"
-                        AutomationProperties.Name="Logout">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border x:Name="LogoutBorder" Background="Transparent"
-                                                CornerRadius="6" Padding="8,4">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="LogoutBorder" Property="Background" Value="#3D2A2A"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <!-- User avatar circle -->
-                    <Border Width="32" Height="32" CornerRadius="16"
-                            Background="{StaticResource NeoAccentBlue}"
-                            Margin="0,0,10,0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding CurrentUsername, Converter={StaticResource FirstLetterConverter}}"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="14" FontWeight="Bold"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="{Binding CurrentUsername}"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontBody}"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource NeoTextLight}"/>
-                        <TextBlock Text="{Binding CurrentRole}"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontLabelSmall}"
-                                   Foreground="#6C6C8A"/>
-                    </StackPanel>
-                </StackPanel>
-            </DockPanel>
-        </Border>
-    </Grid>
+    </Border>
 </UserControl>

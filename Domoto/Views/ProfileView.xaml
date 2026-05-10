@@ -3,118 +3,169 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Grid Background="{StaticResource NeoBg}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <Grid Background="{DynamicResource AppBg}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Style="{StaticResource AppScrollViewer}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Margin="0,40,0,40" MaxWidth="480" MinWidth="400">
+                        Margin="0,40,0,40" MaxWidth="560" MinWidth="420">
 
-                <!-- User Avatar Circle -->
-                <Border Width="80" Height="80" CornerRadius="40"
-                        Background="{StaticResource NeoAccentBlue}"
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,16">
-                    <TextBlock Text="{Binding CurrentUsername, Converter={StaticResource FirstLetterConverter}}"
-                               FontSize="32" FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Border>
+                <!-- Profile hero -->
+                <Border Style="{StaticResource AppCardElevated}" Padding="28" Margin="0,0,0,18">
+                    <StackPanel HorizontalAlignment="Center">
+                        <Border Width="84" Height="84" CornerRadius="42"
+                                HorizontalAlignment="Center"
+                                Margin="0,0,0,18">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                                    <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="4"
+                                                  Opacity="0.2" Direction="270"
+                                                  Color="#6366F1"/>
+                            </Border.Effect>
+                            <TextBlock Text="{Binding CurrentUsername, Converter={StaticResource FirstLetterConverter}}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="34" FontWeight="Bold"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
 
-                <!-- Page Header -->
-                <TextBlock Text="👤 Profile Settings"
-                           FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource NeoText}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,8"/>
-                <TextBlock Foreground="{StaticResource NeoText}" FontSize="13" Margin="0,0,0,24" Opacity="0.7">
-                    <Run Text="Current: "/>
-                    <Run Text="{Binding CurrentUsername}" FontWeight="SemiBold"/>
-                    <Run Text=" ("/>
-                    <Run Text="{Binding CurrentRole}"/>
-                    <Run Text=")"/>
-                </TextBlock>
+                        <TextBlock Text="{Binding CurrentUsername}"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="22" FontWeight="Bold"
+                                   Foreground="{DynamicResource AppText}"
+                                   HorizontalAlignment="Center"/>
 
-                <!-- Update Username Card -->
-                <Border Style="{StaticResource NeoCard}" Margin="0,0,0,20">
-                    <Grid>
-                        <!-- Hard shadow -->
-                        <Border Background="{StaticResource NeoBorder}"
-                                CornerRadius="12"
-                                Margin="3,3,-3,-3"/>
-                        <!-- Card content -->
-                        <Border Background="{StaticResource NeoCardBg}"
-                                BorderBrush="{StaticResource NeoBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="24">
-                            <StackPanel>
-                                <TextBlock Text="Change Username"
-                                           FontSize="17" FontWeight="Bold"
-                                           Foreground="{StaticResource NeoText}"
-                                           Margin="0,0,0,12"/>
-                                <TextBlock Text="New Username"
-                                           Foreground="{StaticResource NeoText}"
-                                           FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-                                <TextBox Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
-                                         Margin="0,0,0,16"/>
-                                <Button Content="Update Username"
-                                        Command="{Binding UpdateProfileCommand}"
-                                        Background="{StaticResource NeoAccentBlue}"
-                                        Foreground="White"
-                                        HorizontalAlignment="Left"/>
+                        <Border Background="{DynamicResource AppAccentSubtle}"
+                                CornerRadius="999"
+                                Padding="10,3"
+                                HorizontalAlignment="Center"
+                                Margin="0,8,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="6" Height="6"
+                                         Fill="{DynamicResource AppAccent}"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding CurrentRole}"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppAccent}"/>
                             </StackPanel>
                         </Border>
-                    </Grid>
+                    </StackPanel>
                 </Border>
 
-                <!-- Change Password Card -->
-                <Border Style="{StaticResource NeoCard}" Margin="0,0,0,20">
-                    <Grid>
-                        <!-- Hard shadow -->
-                        <Border Background="{StaticResource NeoBorder}"
-                                CornerRadius="12"
-                                Margin="3,3,-3,-3"/>
-                        <!-- Card content -->
-                        <Border Background="{StaticResource NeoCardBg}"
-                                BorderBrush="{StaticResource NeoBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="24">
-                            <StackPanel>
-                                <TextBlock Text="Change Password"
-                                           FontSize="17" FontWeight="Bold"
-                                           Foreground="{StaticResource NeoText}"
-                                           Margin="0,0,0,12"/>
-
-                                <TextBlock Text="New Password"
-                                           Foreground="{StaticResource NeoText}"
-                                           FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-                                <PasswordBox x:Name="PwdNew"
-                                             Margin="0,0,0,12"
-                                             PasswordChanged="PwdNew_PasswordChanged"/>
-
-                                <TextBlock Text="Confirm Password"
-                                           Foreground="{StaticResource NeoText}"
-                                           FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-                                <PasswordBox x:Name="PwdConfirm"
-                                             Margin="0,0,0,16"
-                                             PasswordChanged="PwdConfirm_PasswordChanged"/>
-
-                                <Button Content="Change Password"
-                                        Command="{Binding ChangePasswordCommand}"
-                                        Background="{StaticResource NeoAccentGreen}"
-                                        Foreground="White"
-                                        HorizontalAlignment="Left"/>
+                <!-- Username card -->
+                <Border Style="{StaticResource AppCardElevated}" Padding="26" Margin="0,0,0,16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Border Width="32" Height="32" CornerRadius="9"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="◉" FontSize="14" FontWeight="Bold"
+                                           Foreground="{DynamicResource AppAccent}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Change username" Style="{StaticResource AppH3}"/>
+                                <TextBlock Text="Pick a name that fits you."
+                                           Style="{StaticResource AppMuted}"/>
                             </StackPanel>
-                        </Border>
-                    </Grid>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource AppBorder}"
+                                Margin="0,18,0,18"/>
+
+                        <TextBlock Text="New username" Style="{StaticResource AppFieldLabel}"/>
+                        <TextBox Style="{StaticResource AppInput}"
+                                 Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,16"/>
+                        <Button Content="Update username"
+                                Command="{Binding UpdateProfileCommand}"
+                                Style="{StaticResource AppPrimaryButton}"
+                                HorizontalAlignment="Left"
+                                Padding="16,10"/>
+                    </StackPanel>
                 </Border>
 
-                <!-- Profile Message -->
-                <TextBlock Text="{Binding ProfileMessage}"
-                           Foreground="{StaticResource NeoAccentPink}"
-                           FontSize="13" FontWeight="SemiBold"
-                           Margin="0,4,0,0" TextWrapping="Wrap"/>
+                <!-- Password card -->
+                <Border Style="{StaticResource AppCardElevated}" Padding="26" Margin="0,0,0,16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Border Width="32" Height="32" CornerRadius="9"
+                                    Background="{DynamicResource AppWarningSubtle}"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="🔒" FontSize="13"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Change password" Style="{StaticResource AppH3}"/>
+                                <TextBlock Text="Use at least 4 characters."
+                                           Style="{StaticResource AppMuted}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource AppBorder}"
+                                Margin="0,18,0,18"/>
+
+                        <TextBlock Text="New password" Style="{StaticResource AppFieldLabel}"/>
+                        <PasswordBox x:Name="PwdNew"
+                                     Style="{StaticResource AppPassword}"
+                                     Margin="0,0,0,14"
+                                     PasswordChanged="PwdNew_PasswordChanged"/>
+
+                        <TextBlock Text="Confirm password" Style="{StaticResource AppFieldLabel}"/>
+                        <PasswordBox x:Name="PwdConfirm"
+                                     Style="{StaticResource AppPassword}"
+                                     Margin="0,0,0,16"
+                                     PasswordChanged="PwdConfirm_PasswordChanged"/>
+
+                        <Button Content="Change password"
+                                Command="{Binding ChangePasswordCommand}"
+                                Style="{StaticResource AppPrimaryButton}"
+                                HorizontalAlignment="Left"
+                                Padding="16,10"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Inline message banner -->
+                <Border Background="{DynamicResource AppAccentSubtle}"
+                        CornerRadius="10"
+                        Padding="14,12">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProfileMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ProfileMessage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="ⓘ"
+                                   FontSize="14" FontWeight="Bold"
+                                   Foreground="{DynamicResource AppAccent}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"/>
+                        <TextBlock Text="{Binding ProfileMessage}"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppAccent}"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>
