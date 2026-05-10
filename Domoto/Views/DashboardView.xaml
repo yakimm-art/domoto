@@ -3,468 +3,427 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <Grid Background="{StaticResource NeoBg}" Margin="32,24,32,24">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Background="{DynamicResource AppBg}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Style="{StaticResource AppScrollViewer}">
+            <Grid Margin="36,30,36,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>  <!-- hero -->
+                    <RowDefinition Height="Auto"/>  <!-- stats -->
+                    <RowDefinition Height="Auto"/>  <!-- quick actions -->
+                    <RowDefinition Height="Auto"/>  <!-- header -->
+                    <RowDefinition Height="*"/>     <!-- list -->
+                </Grid.RowDefinitions>
 
-            <!-- ======================================================= -->
-            <!-- WELCOME BANNER                                           -->
-            <!-- ======================================================= -->
-            <Grid Grid.Row="0" Margin="0,0,0,24">
-                <!-- Hard shadow -->
-                <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                    <Border.RenderTransform>
-                        <TranslateTransform X="3" Y="3"/>
-                    </Border.RenderTransform>
-                </Border>
-                <!-- Banner card -->
-                <Border Background="{StaticResource NeoCardBg}"
-                        BorderBrush="{StaticResource NeoBorder}"
-                        BorderThickness="2"
-                        CornerRadius="12"
-                        Padding="28,24">
-                <DockPanel>
-                    <Button DockPanel.Dock="Right"
-                            Content="Start tracking"
-                            Command="{Binding NavigateToTasksCommand}"
-                            Background="{StaticResource NeoAccentBlue}"
-                            Foreground="White"
-                            FontSize="14"
-                            Padding="20,10"
-                            VerticalAlignment="Center"
-                            AutomationProperties.Name="Start tracking tasks"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <!-- Greeting with time of day -->
-                        <TextBlock Text="Good morning ☀️"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontBody}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   Margin="0,0,0,4"/>
-                        <TextBlock Text="Daily task manager"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontHeadingLarge}"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource NeoText}"/>
-                        <TextBlock Text="Track, manage, and complete your tasks with ease."
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontBody}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   Margin="0,6,0,0"/>
-                        <!-- Progress bar visual -->
-                        <Grid Margin="0,12,0,0" Height="8" MaxWidth="300" HorizontalAlignment="Left">
-                            <Border Background="#E0E0E0" CornerRadius="4"/>
-                            <Border Background="{StaticResource NeoAccentGreen}" CornerRadius="4"
-                                    HorizontalAlignment="Left" Width="180"/>
-                        </Grid>
-                        <TextBlock Text="60% completed"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontLabelSmall}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   Margin="0,4,0,0"/>
-                    </StackPanel>
-                </DockPanel>
-                </Border>
-            </Grid>
+                <!-- ========================================== -->
+                <!-- HERO WELCOME                                -->
+                <!-- ========================================== -->
+                <Border Grid.Row="0" CornerRadius="18" Padding="32,26" Margin="0,0,0,26"
+                        ClipToBounds="True">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="24" ShadowDepth="4"
+                                          Direction="270" Opacity="0.2"
+                                          Color="#6366F1"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Ellipse Width="320" Height="320"
+                                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                                 Margin="0,-100,-80,0" Opacity="0.22">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Ellipse Width="220" Height="220"
+                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                 Margin="-80,0,0,-80" Opacity="0.14">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
 
-            <!-- ======================================================= -->
-            <!-- STATS ROW — Three neobrutalism cards with icons          -->
-            <!-- ======================================================= -->
-            <TextBlock Grid.Row="1"
-                       Text="Overview"
-                       FontFamily="{StaticResource NeoFontFamily}"
-                       FontSize="{StaticResource NeoFontHeadingSmall}"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource NeoText}"
-                       Margin="0,0,0,12"/>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right"
+                                    Content="Start tracking →"
+                                    Command="{Binding NavigateToTasksCommand}"
+                                    FontFamily="{DynamicResource AppFont}"
+                                    FontSize="13" FontWeight="SemiBold"
+                                    Foreground="{DynamicResource AppAccent}"
+                                    Background="White"
+                                    Padding="18,11"
+                                    BorderThickness="0"
+                                    Cursor="Hand"
+                                    VerticalAlignment="Center">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="bd"
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="10"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bd" Property="Background" Value="#F1F3F5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
 
-            <WrapPanel Grid.Row="2" Margin="0,0,0,24">
-                <!-- In Progress Card -->
-                <Grid Margin="0,0,16,8" Width="220">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoCardBg}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="20,16">
-                        <StackPanel>
-                            <TextBlock Text="📊"
-                                       FontSize="20"
-                                       Margin="0,0,0,4"/>
-                            <TextBlock Text="In Progress"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabel}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoSubtext}"/>
-                            <TextBlock Text="{Binding InProgressCount}"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontHeadingLarge}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoAccentBlue}"
-                                       Margin="0,4,0,0"/>
-                            <Border Background="{StaticResource NeoAccentBlue}"
-                                    Height="4" CornerRadius="2"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="0,8,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Completed Card -->
-                <Grid Margin="0,0,16,8" Width="220">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoCardBg}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="20,16">
-                        <StackPanel>
-                            <TextBlock Text="✅"
-                                       FontSize="20"
-                                       Margin="0,0,0,4"/>
-                            <TextBlock Text="Completed"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabel}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoSubtext}"/>
-                            <TextBlock Text="{Binding CompletedCount}"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontHeadingLarge}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoAccentGreen}"
-                                       Margin="0,4,0,0"/>
-                            <Border Background="{StaticResource NeoAccentGreen}"
-                                    Height="4" CornerRadius="2"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="0,8,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Overdue Card -->
-                <Grid Margin="0,0,16,8" Width="220">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoCardBg}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="20,16">
-                        <StackPanel>
-                            <TextBlock Text="⚠️"
-                                       FontSize="20"
-                                       Margin="0,0,0,4"/>
-                            <TextBlock Text="Overdue"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabel}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoSubtext}"/>
-                            <TextBlock Text="{Binding OverdueCount}"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontHeadingLarge}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoAccentPink}"
-                                       Margin="0,4,0,0"/>
-                            <Border Background="{StaticResource NeoAccentPink}"
-                                    Height="4" CornerRadius="2"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="0,8,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </WrapPanel>
-
-            <!-- ======================================================= -->
-            <!-- RECENT PROJECTS — Static placeholder card tiles          -->
-            <!-- ======================================================= -->
-            <TextBlock Grid.Row="3"
-                       Text="Recent Projects"
-                       FontFamily="{StaticResource NeoFontFamily}"
-                       FontSize="{StaticResource NeoFontHeadingSmall}"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource NeoText}"
-                       Margin="0,0,0,12"/>
-
-            <WrapPanel Grid.Row="4" Margin="0,0,0,24">
-                <!-- Pink project card -->
-                <Grid Margin="0,0,16,12" Width="180">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoAccentPink}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="16,20">
-                        <StackPanel>
-                            <TextBlock Text="🎨"
-                                       FontSize="24"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="Design System"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontBody}"
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
-                            <TextBlock Text="4 tasks"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabelSmall}"
-                                       Foreground="White"
-                                       Opacity="0.85"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Orange project card -->
-                <Grid Margin="0,0,16,12" Width="180">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoAccentOrange}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="16,20">
-                        <StackPanel>
-                            <TextBlock Text="📋"
-                                       FontSize="24"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="Sprint Planning"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontBody}"
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
-                            <TextBlock Text="7 tasks"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabelSmall}"
-                                       Foreground="White"
-                                       Opacity="0.85"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Yellow project card -->
-                <Grid Margin="0,0,16,12" Width="180">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoAccentYellow}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="16,20">
-                        <StackPanel>
-                            <TextBlock Text="💡"
-                                       FontSize="24"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="Research"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontBody}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource NeoText}"/>
-                            <TextBlock Text="3 tasks"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabelSmall}"
-                                       Foreground="{StaticResource NeoText}"
-                                       Opacity="0.7"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Teal project card -->
-                <Grid Margin="0,0,16,12" Width="180">
-                    <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                        <Border.RenderTransform>
-                            <TranslateTransform X="3" Y="3"/>
-                        </Border.RenderTransform>
-                    </Border>
-                    <Border Background="{StaticResource NeoAccentTeal}"
-                            BorderBrush="{StaticResource NeoBorder}"
-                            BorderThickness="2"
-                            CornerRadius="12"
-                            Padding="16,20">
-                        <StackPanel>
-                            <TextBlock Text="🚀"
-                                       FontSize="24"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="Deployment"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontBody}"
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
-                            <TextBlock Text="5 tasks"
-                                       FontFamily="{StaticResource NeoFontFamily}"
-                                       FontSize="{StaticResource NeoFontLabelSmall}"
-                                       Foreground="White"
-                                       Opacity="0.85"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </WrapPanel>
-
-            <!-- ======================================================= -->
-            <!-- DAILY TASKS — Bound to DailyTasks collection             -->
-            <!-- ======================================================= -->
-            <TextBlock Grid.Row="5"
-                       Text="Daily Tasks"
-                       FontFamily="{StaticResource NeoFontFamily}"
-                       FontSize="{StaticResource NeoFontHeadingSmall}"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource NeoText}"
-                       Margin="0,0,0,12"/>
-
-            <StackPanel Grid.Row="6" Margin="0,0,0,16">
-                <ItemsControl ItemsSource="{Binding DailyTasks}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,10">
-                                <!-- Hard shadow -->
-                                <Border Background="{StaticResource NeoBorder}" CornerRadius="12">
-                                    <Border.RenderTransform>
-                                        <TranslateTransform X="3" Y="3"/>
-                                    </Border.RenderTransform>
+                            <StackPanel VerticalAlignment="Center">
+                                <Border Background="#33FFFFFF"
+                                        CornerRadius="999"
+                                        Padding="10,4"
+                                        HorizontalAlignment="Left"
+                                        Margin="0,0,0,12">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Ellipse Width="6" Height="6" Fill="White"
+                                                 VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <TextBlock Text="Today's overview"
+                                                   FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="White"/>
+                                    </StackPanel>
                                 </Border>
-                                <!-- Task card -->
-                                <Border Background="{StaticResource NeoCardBg}"
-                                        BorderBrush="{StaticResource NeoBorder}"
-                                        BorderThickness="2"
-                                        CornerRadius="12"
-                                        Padding="16,12">
-                                    <DockPanel>
-                                        <!-- Status badge on the right -->
-                                        <Border DockPanel.Dock="Right"
-                                                CornerRadius="8"
-                                                Padding="10,4"
-                                                VerticalAlignment="Center"
-                                                Margin="12,0,0,0">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="{StaticResource NeoAccentBlue}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsCompleted}" Value="True">
-                                                            <Setter Property="Background" Value="{StaticResource NeoAccentGreen}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <TextBlock VerticalAlignment="Center"
-                                                       FontFamily="{StaticResource NeoFontFamily}"
-                                                       FontSize="{StaticResource NeoFontLabelSmall}"
-                                                       FontWeight="Bold"
-                                                       Foreground="White">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="New"/>
+                                <TextBlock Text="Welcome back"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="28" FontWeight="Bold"
+                                           Foreground="White"/>
+                                <TextBlock Text="Let's make today productive. Here's what's on your plate."
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="13"
+                                           Foreground="White" Opacity="0.88"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Grid>
+                </Border>
+
+                <!-- ========================================== -->
+                <!-- STATS                                       -->
+                <!-- ========================================== -->
+                <Grid Grid.Row="1" Margin="0,0,0,22">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- In progress -->
+                    <Border Grid.Column="0" Style="{StaticResource AppCardElevated}" Padding="22">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,14">
+                                <Border DockPanel.Dock="Left"
+                                        Width="40" Height="40" CornerRadius="11"
+                                        Background="{DynamicResource AppInfoSubtle}"
+                                        Margin="0,0,12,0">
+                                    <TextBlock Text="◐" FontSize="18" FontWeight="Bold"
+                                               Foreground="{DynamicResource AppInfo}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="In progress"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AppTextMuted}"/>
+                                    <TextBlock Text="Actively worked"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource AppTextSubtle}"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <TextBlock Text="{Binding InProgressCount}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="34" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Completed -->
+                    <Border Grid.Column="2" Style="{StaticResource AppCardElevated}" Padding="22">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,14">
+                                <Border DockPanel.Dock="Left"
+                                        Width="40" Height="40" CornerRadius="11"
+                                        Background="{DynamicResource AppSuccessSubtle}"
+                                        Margin="0,0,12,0">
+                                    <TextBlock Text="✓" FontSize="19" FontWeight="Bold"
+                                               Foreground="{DynamicResource AppSuccess}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Completed"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AppTextMuted}"/>
+                                    <TextBlock Text="All time"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource AppTextSubtle}"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <TextBlock Text="{Binding CompletedCount}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="34" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Overdue -->
+                    <Border Grid.Column="4" Style="{StaticResource AppCardElevated}" Padding="22">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,14">
+                                <Border DockPanel.Dock="Left"
+                                        Width="40" Height="40" CornerRadius="11"
+                                        Background="{DynamicResource AppDangerSubtle}"
+                                        Margin="0,0,12,0">
+                                    <TextBlock Text="!" FontSize="19" FontWeight="Bold"
+                                               Foreground="{DynamicResource AppDanger}"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Overdue"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AppTextMuted}"/>
+                                    <TextBlock Text="Past due date"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource AppTextSubtle}"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <TextBlock Text="{Binding OverdueCount}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="34" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ========================================== -->
+                <!-- QUICK ACTIONS                               -->
+                <!-- ========================================== -->
+                <Border Grid.Row="2" Style="{StaticResource AppCard}"
+                        Padding="18" Margin="0,0,0,26">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="36" Height="36" CornerRadius="10"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="＋" FontSize="20" FontWeight="Bold"
+                                           Foreground="{DynamicResource AppAccent}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Create a new task"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="14" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppText}"/>
+                                <TextBlock Text="Jump into the task workspace and start organizing."
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AppTextMuted}"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Open tasks"
+                                Command="{Binding NavigateToTasksCommand}"
+                                Style="{StaticResource AppPrimaryButton}"
+                                VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- ========================================== -->
+                <!-- TODAY'S TASKS HEADER                        -->
+                <!-- ========================================== -->
+                <Grid Grid.Row="3" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Due today" Style="{StaticResource AppH2}" FontSize="20"/>
+                        <TextBlock Text="Tasks scheduled for the current day."
+                                   Style="{StaticResource AppMuted}"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <Border Grid.Column="1"
+                            Background="{DynamicResource AppElevated}"
+                            CornerRadius="999"
+                            Padding="12,5"
+                            VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding DailyTasks.Count}"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="12" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text=" scheduled"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource AppTextMuted}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ========================================== -->
+                <!-- DAILY TASKS LIST                            -->
+                <!-- ========================================== -->
+                <Border Grid.Row="4" Style="{StaticResource AppCard}" Padding="6">
+                    <Grid>
+                        <ItemsControl ItemsSource="{Binding DailyTasks}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Transparent" Padding="16,14"
+                                            BorderBrush="{DynamicResource AppBorder}"
+                                            BorderThickness="0,0,0,1">
+                                        <DockPanel>
+                                            <!-- Status pill -->
+                                            <Border DockPanel.Dock="Right"
+                                                    CornerRadius="999"
+                                                    Padding="10,3"
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0,0,0">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource AppInfoSubtle}"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsCompleted}" Value="True">
-                                                                <Setter Property="Text" Value="Done"/>
+                                                                <Setter Property="Background" Value="{DynamicResource AppSuccessSubtle}"/>
                                                             </DataTrigger>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding IsCompleted}" Value="False"/>
-                                                                    <Condition Binding="{Binding IsOverdue}" Value="False"/>
-                                                                    <Condition Binding="{Binding IsDueSoon}" Value="True"/>
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Text" Value="In progress"/>
-                                                            </MultiDataTrigger>
+                                                            <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                                <Setter Property="Background" Value="{DynamicResource AppDangerSubtle}"/>
+                                                            </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Border>
+                                                </Border.Style>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Ellipse Width="6" Height="6"
+                                                             VerticalAlignment="Center"
+                                                             Margin="0,0,6,0">
+                                                        <Ellipse.Style>
+                                                            <Style TargetType="Ellipse">
+                                                                <Setter Property="Fill" Value="{DynamicResource AppInfo}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                                        <Setter Property="Fill" Value="{DynamicResource AppSuccess}"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                                        <Setter Property="Fill" Value="{DynamicResource AppDanger}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Ellipse.Style>
+                                                    </Ellipse>
+                                                    <TextBlock VerticalAlignment="Center"
+                                                               FontFamily="{DynamicResource AppFont}"
+                                                               FontSize="11" FontWeight="SemiBold">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="In progress"/>
+                                                                <Setter Property="Foreground" Value="{DynamicResource AppInfo}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                                        <Setter Property="Text" Value="Done"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource AppSuccess}"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                                                                        <Setter Property="Text" Value="Overdue"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource AppDanger}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <!-- Task info on the left -->
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Title}"
-                                                       FontFamily="{StaticResource NeoFontFamily}"
-                                                       FontSize="{StaticResource NeoFontBody}"
-                                                       FontWeight="Bold"
-                                                       Foreground="{StaticResource NeoText}"/>
-                                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                                <TextBlock Text="{Binding Category}"
-                                                           FontFamily="{StaticResource NeoFontFamily}"
-                                                           FontSize="{StaticResource NeoFontLabelSmall}"
-                                                           Foreground="{StaticResource NeoSubtext}"
-                                                           Margin="0,0,12,0"/>
-                                                <TextBlock Text="{Binding DueDate, StringFormat='{}{0:MMM dd, yyyy}'}"
-                                                           FontFamily="{StaticResource NeoFontFamily}"
-                                                           FontSize="{StaticResource NeoFontLabelSmall}"
-                                                           Foreground="{StaticResource NeoSubtext}"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}"
+                                                           FontFamily="{DynamicResource AppFont}"
+                                                           FontSize="14" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource AppText}"
+                                                           TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethrough}}"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                                    <TextBlock Text="{Binding Category}"
+                                                               FontFamily="{DynamicResource AppFont}"
+                                                               FontSize="11" FontWeight="Medium"
+                                                               Foreground="{DynamicResource AppAccent}"
+                                                               Margin="0,0,10,0"/>
+                                                    <TextBlock Text="•" FontSize="11"
+                                                               Foreground="{DynamicResource AppTextSubtle}"
+                                                               Margin="0,0,10,0"/>
+                                                    <TextBlock Text="{Binding DueDate, StringFormat='{}{0:MMM dd • h:mm tt}'}"
+                                                               FontFamily="{DynamicResource AppFont}"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource AppTextMuted}"/>
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
-                                    </DockPanel>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
-                <!-- Empty state message when no daily tasks -->
-                <Border Padding="20,16" Margin="0,4,0,0">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DailyTasks.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="☀️" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                        <TextBlock Text="No tasks due today"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontBody}"
-                                   Foreground="{StaticResource NeoSubtext}"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="Enjoy your free time or plan ahead!"
-                                   FontFamily="{StaticResource NeoFontFamily}"
-                                   FontSize="{StaticResource NeoFontLabelSmall}"
-                                   Foreground="#AAAAAA"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,4,0,0"/>
-                    </StackPanel>
+                        <!-- Empty state -->
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Margin="0,40">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DailyTasks.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <Border Width="56" Height="56" CornerRadius="16"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    HorizontalAlignment="Center"
+                                    Margin="0,0,0,14">
+                                <TextBlock Text="✦" FontSize="24"
+                                           Foreground="{DynamicResource AppAccent}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="All clear for today"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppText}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="No tasks due today. Plan ahead or take a break."
+                                       Style="{StaticResource AppMuted}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Grid>
                 </Border>
-
-                <!-- "View all →" link -->
-                <TextBlock Text="View all →"
-                           FontFamily="{StaticResource NeoFontFamily}"
-                           FontSize="{StaticResource NeoFontBody}"
-                           Foreground="{StaticResource NeoAccentBlue}"
-                           FontWeight="SemiBold"
-                           HorizontalAlignment="Right"
-                           Margin="0,8,0,0"
-                           Cursor="Hand"/>
-            </StackPanel>
-
-        </Grid>
-    </ScrollViewer>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

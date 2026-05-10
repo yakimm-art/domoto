@@ -3,80 +3,604 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Grid Background="White">
+    <!-- =================================================================== -->
+    <!-- LOCAL RESOURCES                                                      -->
+    <!-- Uses the shared styles from ModernStyles.xaml, with a few login-     -->
+    <!-- specific variants (bigger inputs, primary button with pressed state).-->
+    <!-- =================================================================== -->
+    <UserControl.Resources>
+
+        <!-- Login-sized input (44px) — inherits from the shared AppInput -->
+        <Style x:Key="LoginInput" TargetType="TextBox" BasedOn="{StaticResource AppInput}">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="36,0,12,0"/>
+        </Style>
+        <Style x:Key="LoginPassword" TargetType="PasswordBox" BasedOn="{StaticResource AppPassword}">
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="36,0,12,0"/>
+        </Style>
+
+        <!-- Primary button with press feedback (opacity shift — safer than a
+             named ScaleTransform inside a template, which fails to resolve on
+             .NET 4.0 with the error "Cannot find the Trigger target 'sx'"). -->
+        <Style x:Key="LoginPrimaryButton" TargetType="Button" BasedOn="{StaticResource AppPrimaryButton}">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background"
+                                        Value="{DynamicResource AppAccentHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Fade + slight upward rise on initial load for both panels -->
+        <Storyboard x:Key="EnterAnim">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.45"/>
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             From="12" To="0" Duration="0:0:0.45"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <!-- =================================================================== -->
+    <!-- ROOT                                                                 -->
+    <!-- =================================================================== -->
+    <Grid Background="{DynamicResource AppBg}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" /> <!-- Form Area -->
-            <ColumnDefinition Width="1*" /> <!-- Branded Sidebar -->
+            <ColumnDefinition Width="0.95*" MinWidth="360"/>
+            <ColumnDefinition Width="1.1*" MinWidth="380"/>
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT SIDE: Login Form -->
-        <Grid Grid.Column="0" Margin="60,20">
-            <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" MaxWidth="350"
-                        Visibility="{Binding IsNotRegistering, Converter={StaticResource BoolToVis}}">
-                
-                <TextBlock Text="📋 Domoto" FontSize="20" FontWeight="Bold" 
-                           Foreground="#3A8DFF" Margin="0,0,0,40"/>
+        <!-- ============================================================ -->
+        <!-- LEFT: form side with soft surface background                 -->
+        <!-- ============================================================ -->
+        <Grid Grid.Column="0" Background="{DynamicResource AppBg}">
 
-                <TextBlock Text="Login" FontSize="32" FontWeight="Bold" Margin="0,0,0,8"/>
-                <TextBlock Text="Welcome back! Please enter your details." 
-                           Foreground="#666" Margin="0,0,0,30"/>
-
-                <TextBlock Text="Username" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <TextBox x:Name="UsernameBox" Height="40" VerticalContentAlignment="Center"
-                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                         BorderBrush="#DDD" BorderThickness="1" Margin="0,0,0,20" Padding="10,0"/>
-
-                <TextBlock Text="Password" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                <PasswordBox x:Name="PasswordBox" Height="40" VerticalContentAlignment="Center"
-                             PasswordChanged="PasswordBox_PasswordChanged"
-                             BorderBrush="#DDD" BorderThickness="1" Margin="0,0,0,30" Padding="10,0"/>
-
-                <Button Content="Sign In" Command="{Binding LoginCommand}"
-                        Height="45" Background="#3A8DFF" Foreground="White"
-                        FontWeight="Bold" BorderThickness="0" Margin="0,0,0,15">
-                    <Button.Resources>
-                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
-                    </Button.Resources>
-                </Button>
-
-                <Button Content="Don't have an account? Sign up" Command="{Binding ShowRegisterCommand}"
-                        Background="Transparent" BorderThickness="0" Foreground="#3A8DFF"
-                        HorizontalAlignment="Center" Cursor="Hand"/>
-                
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="0,15,0,0" TextAlignment="Center"/>
+            <!-- Top-left brand -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Margin="40,32,0,0">
+                <Border Width="30" Height="30" CornerRadius="8"
+                        VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                            <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="D" Foreground="White"
+                               FontSize="15" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Domoto"
+                           FontSize="15" FontWeight="SemiBold"
+                           Foreground="{DynamicResource AppText}"
+                           VerticalAlignment="Center"/>
             </StackPanel>
 
-            <!-- Register Panel (Simplified) -->
-            <StackPanel x:Name="RegisterPanel" VerticalAlignment="Center" MaxWidth="350"
+            <!-- Bottom-left helper text -->
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                        Margin="40,0,0,28" Orientation="Horizontal">
+                <TextBlock Text="Need help?"
+                           FontSize="12"
+                           Foreground="{DynamicResource AppTextSubtle}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="support@domoto.app"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource AppAccent}"
+                           VerticalAlignment="Center"
+                           Margin="6,0,0,0"/>
+            </StackPanel>
+
+            <!-- LOGIN CARD -->
+            <StackPanel x:Name="LoginPanel"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Width="380" Margin="40,60"
+                        Opacity="0"
+                        Visibility="{Binding IsNotRegistering, Converter={StaticResource BoolToVis}}">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="12"/>
+                </StackPanel.RenderTransform>
+                <StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource EnterAnim}"/>
+                    </EventTrigger>
+                </StackPanel.Triggers>
+
+                <!-- Eyebrow pill -->
+                <Border Background="{DynamicResource AppAccentSubtle}"
+                        CornerRadius="999"
+                        Padding="10,4"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,18">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="6" Height="6"
+                                 Fill="{DynamicResource AppAccent}"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,6,0"/>
+                        <TextBlock Text="Welcome back"
+                                   FontSize="11" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppAccent}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="Sign in to Domoto"
+                           FontFamily="{DynamicResource AppFont}"
+                           FontSize="30" FontWeight="Bold"
+                           Foreground="{DynamicResource AppText}"
+                           Margin="0,0,0,6"/>
+                <TextBlock Text="Pick up where you left off and keep your tasks moving."
+                           FontFamily="{DynamicResource AppFont}"
+                           FontSize="14"
+                           Foreground="{DynamicResource AppTextMuted}"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,28"/>
+
+                <!-- Username with leading icon -->
+                <TextBlock Text="Username" Style="{StaticResource AppFieldLabel}"/>
+                <Grid Margin="0,0,0,18">
+                    <TextBox x:Name="UsernameBox"
+                             Style="{StaticResource LoginInput}"
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="👤" FontSize="14"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Margin="12,0,0,0"/>
+                </Grid>
+
+                <!-- Password row label with forgot link -->
+                <Grid Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Password" Style="{StaticResource AppFieldLabel}"/>
+                    <TextBlock Grid.Column="1" Text="Forgot?"
+                               FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource AppAccent}"
+                               Cursor="Hand"
+                               Margin="0,0,0,6"/>
+                </Grid>
+                <Grid Margin="0,0,0,14">
+                    <PasswordBox x:Name="PasswordBox"
+                                 Style="{StaticResource LoginPassword}"
+                                 PasswordChanged="PasswordBox_PasswordChanged"/>
+                    <TextBlock Text="🔒" FontSize="13"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Margin="12,0,0,0"/>
+                </Grid>
+
+                <!-- Remember me -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <CheckBox Style="{StaticResource AppCheckBox}" Content="Remember me"/>
+                </StackPanel>
+
+                <!-- Error banner — only appears when ErrorMessage is non-empty -->
+                <Border Background="{DynamicResource AppDangerSubtle}"
+                        CornerRadius="8"
+                        Padding="12,10"
+                        Margin="0,0,0,14">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="⚠"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource AppDanger}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppDanger}"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- Primary button -->
+                <Button Content="Sign in"
+                        Command="{Binding LoginCommand}"
+                        Style="{StaticResource LoginPrimaryButton}"
+                        Margin="0,0,0,18"/>
+
+                <!-- Divider with "or" -->
+                <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Height="1"
+                            Background="{DynamicResource AppBorder}"
+                            VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="or continue with"
+                               FontSize="11"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               Margin="10,0" VerticalAlignment="Center"/>
+                    <Border Grid.Column="2" Height="1"
+                            Background="{DynamicResource AppBorder}"
+                            VerticalAlignment="Center"/>
+                </Grid>
+
+                <!-- Sign-up prompt -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="New to Domoto?"
+                               FontSize="13"
+                               Foreground="{DynamicResource AppTextMuted}"
+                               VerticalAlignment="Center"/>
+                    <Button Content="Create an account"
+                            Command="{Binding ShowRegisterCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Foreground="{DynamicResource AppAccent}"
+                            FontSize="13" FontWeight="SemiBold"
+                            Margin="6,0,0,0"
+                            Padding="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <TextBlock Text="{TemplateBinding Content}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Cursor="Hand"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- REGISTER CARD -->
+            <StackPanel x:Name="RegisterPanel"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Width="380" Margin="40,60"
+                        Opacity="0"
                         Visibility="{Binding IsRegistering, Converter={StaticResource BoolToVis}}">
-                <TextBlock Text="Create Account" FontSize="32" FontWeight="Bold" Margin="0,0,0,30"/>
-                
-                <!-- Reuse input patterns from above for your RegisterUsername, etc. -->
-                
-                <Button Content="Back to Sign In" Command="{Binding BackToLoginCommand}"
-                        Background="Transparent" BorderThickness="0" Foreground="#3A8DFF" Margin="0,20,0,0"/>
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="12"/>
+                </StackPanel.RenderTransform>
+                <StackPanel.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard Storyboard="{StaticResource EnterAnim}"/>
+                    </EventTrigger>
+                </StackPanel.Triggers>
+
+                <Border Background="{DynamicResource AppAccentSubtle}"
+                        CornerRadius="999"
+                        Padding="10,4"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,18">
+                    <TextBlock Text="Get started"
+                               FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource AppAccent}"/>
+                </Border>
+
+                <TextBlock Text="Create your account"
+                           FontSize="30" FontWeight="Bold"
+                           Foreground="{DynamicResource AppText}"
+                           Margin="0,0,0,6"/>
+                <TextBlock Text="A workspace built around focus, not busywork."
+                           FontSize="14"
+                           Foreground="{DynamicResource AppTextMuted}"
+                           Margin="0,0,0,28"/>
+
+                <TextBlock Text="Username" Style="{StaticResource AppFieldLabel}"/>
+                <Grid Margin="0,0,0,16">
+                    <TextBox Style="{StaticResource LoginInput}"
+                             Text="{Binding RegisterUsername, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="👤" FontSize="14"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Margin="12,0,0,0"/>
+                </Grid>
+
+                <TextBlock Text="Password" Style="{StaticResource AppFieldLabel}"/>
+                <Grid Margin="0,0,0,16">
+                    <PasswordBox Style="{StaticResource LoginPassword}"
+                                 PasswordChanged="RegPasswordBox_PasswordChanged"/>
+                    <TextBlock Text="🔒" FontSize="13"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Margin="12,0,0,0"/>
+                </Grid>
+
+                <TextBlock Text="Confirm password" Style="{StaticResource AppFieldLabel}"/>
+                <Grid Margin="0,0,0,20">
+                    <PasswordBox Style="{StaticResource LoginPassword}"
+                                 PasswordChanged="RegConfirmPasswordBox_PasswordChanged"/>
+                    <TextBlock Text="🔒" FontSize="13"
+                               Foreground="{DynamicResource AppTextSubtle}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"
+                               Margin="12,0,0,0"/>
+                </Grid>
+
+                <!-- Error banner -->
+                <Border Background="{DynamicResource AppDangerSubtle}"
+                        CornerRadius="8"
+                        Padding="12,10"
+                        Margin="0,0,0,14">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="⚠"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource AppDanger}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppDanger}"
+                                   TextWrapping="Wrap"/>
+                    </DockPanel>
+                </Border>
+
+                <Button Content="Create account"
+                        Command="{Binding RegisterCommand}"
+                        Style="{StaticResource LoginPrimaryButton}"
+                        Margin="0,0,0,16"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Already with us?"
+                               FontSize="13"
+                               Foreground="{DynamicResource AppTextMuted}"
+                               VerticalAlignment="Center"/>
+                    <Button Content="Sign in"
+                            Command="{Binding BackToLoginCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Foreground="{DynamicResource AppAccent}"
+                            FontSize="13" FontWeight="SemiBold"
+                            Margin="6,0,0,0" Padding="0">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <TextBlock Text="{TemplateBinding Content}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Cursor="Hand"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
-        <!-- RIGHT SIDE: Blue Decorative Sidebar -->
-        <Border Grid.Column="1" Margin="20">
-            <Border CornerRadius="20">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#1A5ABF" Offset="0"/>
-                        <GradientStop Color="#3A8DFF" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+        <!-- ============================================================ -->
+        <!-- RIGHT: decorative hero panel                                 -->
+        <!-- ============================================================ -->
+        <Border Grid.Column="1" Margin="0,20,20,20"
+                CornerRadius="24" ClipToBounds="True">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                    <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <!-- Layered soft orbs for depth -->
+                <Ellipse Width="420" Height="420"
+                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                         Margin="0,-140,-160,0" Opacity="0.22">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FFFFFF" Offset="0"/>
+                            <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Ellipse Width="300" Height="300"
+                         HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                         Margin="-120,0,0,-100" Opacity="0.16">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FFFFFF" Offset="0"/>
+                            <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Ellipse Width="180" Height="180"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Margin="180,-80,0,0" Opacity="0.10">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FFFFFF" Offset="0"/>
+                            <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
 
-                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <StackPanel MaxWidth="400">
-                        <TextBlock Text="Welcome to Domoto" Foreground="White" FontSize="28" 
-                                   FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                        <TextBlock Text="Effortlessly manage your tasks with simple coordination. Organize your Domoto experience today." 
-                                   Foreground="White" FontSize="16" TextAlignment="Center" TextWrapping="Wrap" Opacity="0.8"/>
+                <!-- Decorative mini preview card, floats upper-right area -->
+                <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Margin="0,64,44,0"
+                        Width="230"
+                        Background="#E6FFFFFF"
+                        CornerRadius="14"
+                        Padding="14,12">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="-4"/>
+                    </Border.RenderTransform>
+                    <Border.RenderTransformOrigin>0.5,0.5</Border.RenderTransformOrigin>
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,8">
+                            <Border DockPanel.Dock="Left"
+                                    Width="8" Height="8" CornerRadius="4"
+                                    Background="#10B981"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,8,0"/>
+                            <TextBlock Text="Ship landing page"
+                                       FontSize="12" FontWeight="SemiBold"
+                                       Foreground="#0F172A"/>
+                        </DockPanel>
+                        <Border Height="4" CornerRadius="2"
+                                Background="#EEF2F7" Margin="0,0,0,6">
+                            <Border Background="#6366F1" CornerRadius="2"
+                                    Width="140" HorizontalAlignment="Left"/>
+                        </Border>
+                        <TextBlock Text="Due today • High priority"
+                                   FontSize="10"
+                                   Foreground="#64748B"/>
                     </StackPanel>
-                </Grid>
-            </Border>
+                </Border>
+
+                <!-- Decorative mini preview card, floats lower-left area -->
+                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                        Margin="36,0,0,80"
+                        Width="220"
+                        Background="#E6FFFFFF"
+                        CornerRadius="14"
+                        Padding="14,12">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="3"/>
+                    </Border.RenderTransform>
+                    <Border.RenderTransformOrigin>0.5,0.5</Border.RenderTransformOrigin>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Border Width="24" Height="24" CornerRadius="8"
+                                    Background="#EEF0FF" Margin="0,0,8,0">
+                                <TextBlock Text="✓" FontSize="12" FontWeight="Bold"
+                                           Foreground="#6366F1"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="Review Q4 plan"
+                                       FontSize="12" FontWeight="SemiBold"
+                                       Foreground="#0F172A"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Border Background="#E8F5E9"
+                                CornerRadius="999"
+                                Padding="8,2"
+                                HorizontalAlignment="Left">
+                            <TextBlock Text="Completed"
+                                       FontSize="10" FontWeight="SemiBold"
+                                       Foreground="#10B981"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Center copy stack -->
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            MaxWidth="440" Margin="32,0">
+                    <Border Background="#33FFFFFF"
+                            CornerRadius="999"
+                            Padding="12,6"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,22">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="✦" Foreground="White"
+                                       FontSize="10"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Task manager, reimagined"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="Your day, beautifully organized."
+                               Foreground="White"
+                               FontSize="34" FontWeight="Bold"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,14"/>
+                    <TextBlock Text="Plan what matters, ship what counts, and keep your focus where it belongs."
+                               Foreground="White" Opacity="0.88"
+                               FontSize="14"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"/>
+
+                    <!-- Testimonial / quote card -->
+                    <Border Background="#26FFFFFF"
+                            BorderBrush="#40FFFFFF"
+                            BorderThickness="1"
+                            CornerRadius="14"
+                            Padding="18"
+                            Margin="0,32,0,0">
+                        <StackPanel>
+                            <TextBlock Foreground="White" FontSize="13" LineHeight="20"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Left"
+                                       Text="“Domoto turned our scattered to-dos into a calm, focused workflow. We ship faster and stress less.”"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                                <Border Width="32" Height="32" CornerRadius="16"
+                                        Background="#FFFFFF" Margin="0,0,10,0">
+                                    <TextBlock Text="A" FontSize="14" FontWeight="Bold"
+                                               Foreground="#6366F1"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Ava Reyes"
+                                               Foreground="White"
+                                               FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Product lead at Nimbus"
+                                               Foreground="White" Opacity="0.75"
+                                               FontSize="11"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

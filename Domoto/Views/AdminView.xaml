@@ -4,153 +4,263 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-    <Grid Background="{StaticResource NeoBg}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Margin="32,32,32,32" MaxWidth="900">
+    <Grid Background="{DynamicResource AppBg}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Style="{StaticResource AppScrollViewer}">
+            <StackPanel Margin="36,30,36,30" MaxWidth="1000">
 
-                <!-- Page Header -->
-                <TextBlock Text="🔧 Admin Panel"
-                           FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource NeoText}"
-                           Margin="0,0,0,4"/>
-                <TextBlock Text="Manage users and roles"
-                           Foreground="{StaticResource NeoText}"
-                           FontSize="13" Margin="0,0,0,24" Opacity="0.7"/>
+                <!-- Header -->
+                <Border Background="{DynamicResource AppAccentSubtle}"
+                        CornerRadius="999" Padding="10,4"
+                        HorizontalAlignment="Left" Margin="0,0,0,10">
+                    <TextBlock Text="Admin zone"
+                               FontFamily="{DynamicResource AppFont}"
+                               FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource AppAccent}"/>
+                </Border>
+                <TextBlock Text="User management"
+                           Style="{StaticResource AppH1}" FontSize="28"/>
+                <TextBlock Text="Create accounts, assign roles, and remove users."
+                           Style="{StaticResource AppMuted}"
+                           Margin="0,4,0,26"/>
 
-                <!-- User List Card -->
-                <Border Margin="0,0,0,24">
-                    <Grid>
-                        <!-- Hard shadow -->
-                        <Border Background="{StaticResource NeoBorder}"
-                                CornerRadius="12"
-                                Margin="3,3,-3,-3"/>
-                        <!-- Card content -->
-                        <Border Background="{StaticResource NeoCardBg}"
-                                BorderBrush="{StaticResource NeoBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="20">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                    <TextBlock Text="Users"
-                                               FontSize="17" FontWeight="Bold"
-                                               Foreground="{StaticResource NeoText}"
-                                               VerticalAlignment="Center"/>
-                                    <!-- User count badge -->
-                                    <Border Background="{StaticResource NeoAccentBlue}"
-                                            CornerRadius="10"
-                                            Padding="8,2"
-                                            Margin="10,0,0,0"
-                                            VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Users.Count}"
-                                                   FontSize="12" FontWeight="Bold"
-                                                   Foreground="White"/>
-                                    </Border>
+                <!-- Users list card -->
+                <Border Style="{StaticResource AppCardElevated}" Padding="22" Margin="0,0,0,22">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,18">
+                            <Border DockPanel.Dock="Right"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    CornerRadius="999"
+                                    Padding="12,4"
+                                    VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Users.Count}"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="11" FontWeight="Bold"
+                                               Foreground="{DynamicResource AppAccent}"/>
+                                    <TextBlock Text=" total"
+                                               FontFamily="{DynamicResource AppFont}"
+                                               FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AppAccent}"/>
                                 </StackPanel>
-
-                                <DataGrid ItemsSource="{Binding Users}"
-                                          SelectedItem="{Binding SelectedUser}"
-                                          IsReadOnly="True"
-                                          Margin="0,0,0,0"
-                                          AutomationProperties.Name="User list">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
-                                        <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*"/>
-                                        <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="120"/>
-                                        <DataGridTemplateColumn Header="Actions" Width="120">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="Delete" Cursor="Hand"
-                                                            Background="{StaticResource NeoAccentPink}"
-                                                            Foreground="White"
-                                                            Padding="10,4" FontSize="11"
-                                                            Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                            CommandParameter="{Binding}"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </Border>
-
-                <!-- Add User Form Card -->
-                <Border Margin="0,0,0,20">
-                    <Grid>
-                        <!-- Hard shadow -->
-                        <Border Background="{StaticResource NeoBorder}"
-                                CornerRadius="12"
-                                Margin="3,3,-3,-3"/>
-                        <!-- Card content -->
-                        <Border Background="{StaticResource NeoCardBg}"
-                                BorderBrush="{StaticResource NeoBorder}"
-                                BorderThickness="2"
-                                CornerRadius="12"
-                                Padding="24">
+                            </Border>
                             <StackPanel>
-                                <TextBlock Text="Add New User"
-                                           FontSize="17" FontWeight="Bold"
-                                           Foreground="{StaticResource NeoText}"
-                                           Margin="0,0,0,16"/>
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="12"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="12"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Labels -->
-                                    <TextBlock Grid.Row="0" Grid.Column="0"
-                                               Text="Username"
-                                               Foreground="{StaticResource NeoText}"
-                                               FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="2"
-                                               Text="Password"
-                                               Foreground="{StaticResource NeoText}"
-                                               FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-                                    <TextBlock Grid.Row="0" Grid.Column="4"
-                                               Text="Role"
-                                               Foreground="{StaticResource NeoText}"
-                                               FontSize="12" Margin="0,0,0,6" Opacity="0.7"/>
-
-                                    <!-- Inputs -->
-                                    <TextBox Grid.Row="2" Grid.Column="0"
-                                             Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
-                                             AutomationProperties.Name="New username"/>
-                                    <PasswordBox Grid.Row="2" Grid.Column="2"
-                                                 x:Name="AdminPwd"
-                                                 PasswordChanged="AdminPwd_PasswordChanged"
-                                                 AutomationProperties.Name="New password"/>
-                                    <ComboBox Grid.Row="2" Grid.Column="4"
-                                              Width="120"
-                                              SelectedItem="{Binding NewRole}"
-                                              AutomationProperties.Name="Role">
-                                        <sys:String>User</sys:String>
-                                        <sys:String>Admin</sys:String>
-                                    </ComboBox>
-                                </Grid>
-
-                                <Button Content="Add User"
-                                        Command="{Binding AddUserCommand}"
-                                        Background="{StaticResource NeoAccentGreen}"
-                                        Foreground="White"
-                                        HorizontalAlignment="Left"
-                                        Margin="0,20,0,0"/>
+                                <TextBlock Text="All users" Style="{StaticResource AppH3}"/>
+                                <TextBlock Text="Manage who can access the workspace."
+                                           Style="{StaticResource AppMuted}"
+                                           Margin="0,2,0,0"/>
                             </StackPanel>
+                        </DockPanel>
+
+                        <!-- Table header -->
+                        <Border Background="{DynamicResource AppElevated}"
+                                CornerRadius="8"
+                                Padding="18,10" Margin="0,0,0,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="120"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="ID"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppTextMuted}"/>
+                                <TextBlock Grid.Column="1" Text="USERNAME"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppTextMuted}"/>
+                                <TextBlock Grid.Column="2" Text="ROLE"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppTextMuted}"/>
+                                <TextBlock Grid.Column="3" Text="ACTION"
+                                           FontFamily="{DynamicResource AppFont}"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AppTextMuted}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
                         </Border>
-                    </Grid>
+
+                        <ItemsControl ItemsSource="{Binding Users}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource AppBorder}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="18,14">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource AppHover}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="140"/>
+                                                <ColumnDefinition Width="120"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Id}"
+                                                       FontFamily="{DynamicResource AppFont}"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource AppTextMuted}"
+                                                       VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                                        VerticalAlignment="Center">
+                                                <Border Width="30" Height="30" CornerRadius="15"
+                                                        Margin="0,0,12,0">
+                                                    <Border.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                            <GradientStop Color="{DynamicResource AppGradStart}" Offset="0"/>
+                                                            <GradientStop Color="{DynamicResource AppGradEnd}" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Border.Background>
+                                                    <TextBlock Text="{Binding Username, Converter={StaticResource FirstLetterConverter}}"
+                                                               FontSize="12" FontWeight="Bold"
+                                                               Foreground="White"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding Username}"
+                                                           FontFamily="{DynamicResource AppFont}"
+                                                           FontSize="13" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource AppText}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <Border Grid.Column="2" CornerRadius="999"
+                                                    Padding="10,3"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource AppElevated}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                                <Setter Property="Background" Value="{DynamicResource AppAccentSubtle}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Ellipse Width="6" Height="6"
+                                                             VerticalAlignment="Center"
+                                                             Margin="0,0,6,0">
+                                                        <Ellipse.Style>
+                                                            <Style TargetType="Ellipse">
+                                                                <Setter Property="Fill" Value="{DynamicResource AppTextMuted}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                                        <Setter Property="Fill" Value="{DynamicResource AppAccent}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Ellipse.Style>
+                                                    </Ellipse>
+                                                    <TextBlock Text="{Binding Role}"
+                                                               FontFamily="{DynamicResource AppFont}"
+                                                               FontSize="11" FontWeight="SemiBold">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Role}" Value="Admin">
+                                                                        <Setter Property="Foreground" Value="{DynamicResource AppAccent}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Border>
+                                            <Button Grid.Column="3"
+                                                    Content="Delete"
+                                                    HorizontalAlignment="Right"
+                                                    Style="{StaticResource AppSecondaryButton}"
+                                                    Padding="14,7"
+                                                    FontSize="12"
+                                                    Foreground="{DynamicResource AppDanger}"
+                                                    Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Border>
 
+                <!-- Add user card -->
+                <Border Style="{StaticResource AppCardElevated}" Padding="26">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Border Width="36" Height="36" CornerRadius="10"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    Margin="0,0,12,0">
+                                <TextBlock Text="＋" FontSize="18" FontWeight="Bold"
+                                           Foreground="{DynamicResource AppAccent}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Add new user" Style="{StaticResource AppH3}"/>
+                                <TextBlock Text="Create a new account and assign a role."
+                                           Style="{StaticResource AppMuted}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Border Height="1" Background="{DynamicResource AppBorder}"
+                                Margin="0,18,0,18"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Username"
+                                       Style="{StaticResource AppFieldLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Password"
+                                       Style="{StaticResource AppFieldLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Role"
+                                       Style="{StaticResource AppFieldLabel}"/>
+
+                            <TextBox Grid.Row="1" Grid.Column="0"
+                                     Style="{StaticResource AppInput}"
+                                     Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"/>
+                            <PasswordBox Grid.Row="1" Grid.Column="2"
+                                         Style="{StaticResource AppPassword}"
+                                         x:Name="AdminPwd"
+                                         PasswordChanged="AdminPwd_PasswordChanged"/>
+                            <ComboBox Grid.Row="1" Grid.Column="4"
+                                      Style="{StaticResource AppCombo}"
+                                      SelectedItem="{Binding NewRole}">
+                                <sys:String>User</sys:String>
+                                <sys:String>Admin</sys:String>
+                            </ComboBox>
+                        </Grid>
+
+                        <Button Content="Add user"
+                                Command="{Binding AddUserCommand}"
+                                Style="{StaticResource AppPrimaryButton}"
+                                HorizontalAlignment="Left"
+                                Padding="18,11"
+                                Margin="0,22,0,0"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>

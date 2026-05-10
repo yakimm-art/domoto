@@ -6,7 +6,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Legacy neobrutalist theme kept for any lingering Neo* lookups
+                     (its brush values are overridden by the palette below). -->
                 <ResourceDictionary Source="Themes/NeobrutalistTheme.xaml"/>
+                <!-- Modern shared styles used by the redesigned views. -->
+                <ResourceDictionary Source="Themes/ModernStyles.xaml"/>
+                <!-- Palette is merged LAST so its brushes win.
+                     ThemeService swaps this at runtime for dark mode. -->
+                <ResourceDictionary Source="Themes/PaletteLight.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <helpers:BoolToStrikethroughConverter x:Key="BoolToStrikethrough"/>
             <helpers:InverseBoolConverter x:Key="InverseBool"/>
