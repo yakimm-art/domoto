@@ -24,12 +24,14 @@ Domoto is a WPF desktop task manager built with C# and MVVM. It supports authent
 ## MySQL Setup (Required)
 1. Start MySQL (XAMPP Control Panel).
 2. Create the database and user:
-   ```sql
-   CREATE DATABASE IF NOT EXISTS taskmanager;
-   CREATE USER 'taskmanager_user'@'localhost' IDENTIFIED BY 'manager';
-   GRANT ALL PRIVILEGES ON taskmanager.* TO 'taskmanager_user'@'localhost';
-   FLUSH PRIVILEGES;
-   ```
+   - Option A: import `setup.sql` in phpMyAdmin (Import tab)
+   - Option B: run these SQL statements manually:
+     ```sql
+     CREATE DATABASE IF NOT EXISTS taskmanager;
+     CREATE USER IF NOT EXISTS 'taskmanager_user'@'localhost' IDENTIFIED BY 'manager';
+     GRANT ALL PRIVILEGES ON taskmanager.* TO 'taskmanager_user'@'localhost';
+     FLUSH PRIVILEGES;
+     ```
 3. Configure `Domoto/app.config`:
    ```xml
    <appSettings>
