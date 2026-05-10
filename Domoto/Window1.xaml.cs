@@ -202,11 +202,18 @@ namespace Domoto
         private void NavigateToTasks()
         {
             _taskVm.LoadTasks();
+            _taskVm.FocusSearchRequested -= OnFocusSearchRequested;
+            _taskVm.FocusSearchRequested += OnFocusSearchRequested;
 
             var taskView = new TaskView();
             taskView.DataContext = _taskVm;
 
             MainContent.Content = taskView;
+        }
+
+        private void OnFocusSearchRequested()
+        {
+            SidebarControl.FocusSearch();
         }
 
         private void NavigateToProfile()

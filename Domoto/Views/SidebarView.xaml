@@ -51,7 +51,8 @@
                                Foreground="{DynamicResource AppSidebarMuted}"
                                VerticalAlignment="Center"
                                Margin="0,0,8,0"/>
-                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox x:Name="SearchBox"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                              FontFamily="{DynamicResource AppFont}"
                              FontSize="12"
                              Height="34"
