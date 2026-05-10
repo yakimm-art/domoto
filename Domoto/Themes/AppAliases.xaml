@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+        Placeholder ResourceDictionary. A teammate's commit added this file
+        (empty) and wired it into the csproj, which made the WPF compiler
+        fail with MC3000 "Root element is missing". Filling it with a valid
+        empty dictionary unblocks the build. Add aliases here as needed.
+    -->
+</ResourceDictionary>
