@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Domoto.Services;
 using Domoto.ViewModels;
 using Domoto.Views;
 
@@ -17,6 +18,46 @@ namespace Domoto
         {
             InitializeComponent();
             ShowLogin();
+        }
+
+        // ── Startup ────────────────────────────────────────────────
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Apply initial theme (light) and reflect the icon.
+            ThemeService.Apply(AppTheme.Light);
+            UpdateThemeButtonIcon();
+        }
+
+        private void Window_StateChanged(object sender, System.EventArgs e)
+        {
+            // When maximized, flatten the corners and remove the drop shadow
+            // so the window sits flush to the work area. When restored, bring
+            // the rounded look back.
+            if (WindowState == WindowState.Maximized)
+            {
+                RootShell.CornerRadius = new CornerRadius(0);
+                RootShell.BorderThickness = new Thickness(0);
+                RootShell.Effect = null;
+                TitleBarBorder.CornerRadius = new CornerRadius(0);
+                BtnMaximize.Content = "\u2750"; // restore glyph
+                BtnMaximize.ToolTip = "Restore Down";
+            }
+            else
+            {
+                RootShell.CornerRadius = new CornerRadius(14);
+                RootShell.BorderThickness = new Thickness(1);
+                RootShell.Effect = new System.Windows.Media.Effects.DropShadowEffect
+                {
+                    BlurRadius = 18,
+                    ShadowDepth = 0,
+                    Opacity = 0.25,
+                    Color = System.Windows.Media.Colors.Black
+                };
+                TitleBarBorder.CornerRadius = new CornerRadius(14, 14, 0, 0);
+                BtnMaximize.Content = "\u2610"; // maximize glyph
+                BtnMaximize.ToolTip = "Maximize";
+            }
         }
 
         // ── Custom title bar handlers ──────────────────────────────
@@ -48,25 +89,29 @@ namespace Domoto
             Close();
         }
 
+        private void BtnTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeService.Toggle();
+            UpdateThemeButtonIcon();
+        }
+
+        private void UpdateThemeButtonIcon()
+        {
+            // Moon in light mode (click to go dark), sun in dark mode (click to go light).
+            BtnTheme.Content = ThemeService.Current == AppTheme.Dark ? "\u2600" : "\uD83C\uDF19";
+        }
+
         private void ToggleMaximize()
         {
-            if (WindowState == WindowState.Maximized)
-            {
-                WindowState = WindowState.Normal;
-                BtnMaximize.Content = "☐";
-                BtnMaximize.ToolTip = "Maximize";
-            }
-            else
-            {
-                WindowState = WindowState.Maximized;
-                BtnMaximize.Content = "❐";
-                BtnMaximize.ToolTip = "Restore Down";
-            }
+            WindowState = WindowState == WindowState.Maximized
+                ? WindowState.Normal
+                : WindowState.Maximized;
         }
+
+        // ── Navigation (unchanged) ─────────────────────────────────
 
         private void ShowLogin()
         {
-            // Hide sidebar and reset its column width so login is full-screen
             SidebarControl.Visibility = Visibility.Collapsed;
             SidebarColumn.Width = new GridLength(0);
 
@@ -83,11 +128,9 @@ namespace Domoto
         {
             if (success)
             {
-                // Show sidebar
                 SidebarControl.Visibility = Visibility.Visible;
                 SidebarColumn.Width = new GridLength(260);
 
-                // Initialize sidebar view model
                 _sidebarVm = new SidebarViewModel();
                 _sidebarVm.RefreshUserInfo();
                 _sidebarVm.NavigationRequested += OnSidebarNavigationRequested;
@@ -95,10 +138,8 @@ namespace Domoto
                 _sidebarVm.SearchTextChanged += OnSidebarSearchTextChanged;
                 SidebarControl.DataContext = _sidebarVm;
 
-                // Initialize task view model (shared across navigation)
                 _taskVm = new TaskViewModel();
 
-                // Navigate to Dashboard
                 NavigateToDashboard();
             }
         }
@@ -124,7 +165,6 @@ namespace Domoto
 
         private void OnLogoutRequested()
         {
-            // Unhook sidebar events
             if (_sidebarVm != null)
             {
                 _sidebarVm.NavigationRequested -= OnSidebarNavigationRequested;
@@ -161,7 +201,6 @@ namespace Domoto
 
         private void NavigateToTasks()
         {
-            // Reload tasks to get fresh data
             _taskVm.LoadTasks();
 
             var taskView = new TaskView();
@@ -190,7 +229,6 @@ namespace Domoto
 
         private void OnSidebarSearchTextChanged(string searchText)
         {
-            // Update TaskViewModel search text when the current view is TaskView
             if (_taskVm != null && MainContent.Content is TaskView)
             {
                 _taskVm.SearchText = searchText;
