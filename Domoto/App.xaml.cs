@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using Domoto.Services;
 
 namespace Domoto
 {
@@ -10,9 +11,19 @@ namespace Domoto
         {
             base.OnStartup(e);
 
+            // Initialize notification service
+            var notificationService = NotificationService.Instance;
+
             // Global exception handler
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            // Dispose notification service
+            NotificationService.Instance.Dispose();
+            base.OnExit(e);
         }
 
         private void App_DispatcherUnhandledException(object sender,
