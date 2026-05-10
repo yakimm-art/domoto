@@ -215,8 +215,11 @@ namespace Domoto.ViewModels
         public ICommand ChangePasswordCommand { get; private set; }
         public ICommand LogoutCommand { get; private set; }
         public ICommand ClearFiltersCommand { get; private set; }
+        public ICommand RefreshCommand { get; private set; }
+        public ICommand FocusSearchCommand { get; private set; }
 
         public event Action LogoutRequested;
+        public event Action FocusSearchRequested;
 
         public TaskViewModel()
         {
@@ -240,6 +243,8 @@ namespace Domoto.ViewModels
             ChangePasswordCommand = new RelayCommand(ExecuteChangePassword);
             LogoutCommand = new RelayCommand(ExecuteLogout);
             ClearFiltersCommand = new RelayCommand(ExecuteClearFilters);
+            RefreshCommand = new RelayCommand(o => LoadTasks());
+            FocusSearchCommand = new RelayCommand(o => { if (FocusSearchRequested != null) FocusSearchRequested(); });
 
             LoadTasks();
         }

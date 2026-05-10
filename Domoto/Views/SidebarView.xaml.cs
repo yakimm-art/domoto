@@ -8,5 +8,11 @@ namespace Domoto.Views
         {
             InitializeComponent();
         }
+
+        public void FocusSearch()
+        {
+            SearchBox.Focus();
+            SearchBox.SelectAll();
+        }
     }
 }

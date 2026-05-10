@@ -21,5 +21,10 @@ namespace Domoto.Views
                 FormPanelColumn.Width = new GridLength(380);
             }
         }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShortcutsPopup.IsOpen = !ShortcutsPopup.IsOpen;
+        }
     }
 }

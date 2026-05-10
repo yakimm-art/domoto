@@ -4,6 +4,19 @@
     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
     SizeChanged="TaskView_SizeChanged">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Control" Key="N" Command="{Binding AddTaskCommand}"/>
+        <KeyBinding Modifiers="Control" Key="S" Command="{Binding SaveTaskCommand}"/>
+        <KeyBinding Modifiers="Control" Key="E" Command="{Binding EditTaskCommand}"
+                    CommandParameter="{Binding SelectedTask}"/>
+        <KeyBinding Key="Delete" Command="{Binding DeleteTaskCommand}"
+                    CommandParameter="{Binding SelectedTask}"/>
+        <KeyBinding Key="Space" Command="{Binding ToggleCompleteCommand}"
+                    CommandParameter="{Binding SelectedTask}"/>
+        <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
+        <KeyBinding Modifiers="Control" Key="F" Command="{Binding FocusSearchCommand}"/>
+    </UserControl.InputBindings>
+
     <Grid Background="{DynamicResource AppBg}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -56,6 +69,70 @@
                         <TextBlock Text="New task" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+
+                <!-- Keyboard shortcuts help button -->
+                <Button Grid.Column="1" HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="-44,0,0,0"
+                        Style="{StaticResource AppIconButton}"
+                        ToolTip="Keyboard shortcuts"
+                        x:Name="HelpButton"
+                        Click="HelpButton_Click"
+                        Content="?"
+                        FontSize="13"
+                        FontWeight="Bold"/>
+
+                <!-- Shortcuts popup -->
+                <Popup x:Name="ShortcutsPopup"
+                       PlacementTarget="{Binding ElementName=HelpButton}"
+                       Placement="Bottom"
+                       StaysOpen="False"
+                       AllowsTransparency="True">
+                    <Border Background="{DynamicResource AppSurface}"
+                            BorderBrush="{DynamicResource AppBorder}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="18,14"
+                            Effect="{StaticResource AppShadow}">
+                        <StackPanel>
+                            <TextBlock Text="Keyboard Shortcuts"
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="13" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppText}"
+                                       Margin="0,0,0,10"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2"><TextBlock Text="Ctrl+N" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="New task" Style="{StaticResource AppMuted}" VerticalAlignment="Center"/>
+                                <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Ctrl+S" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Save task" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="2" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Ctrl+E" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="Edit selected task" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="3" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Space" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="3" Grid.Column="2" Text="Toggle complete" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="4" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Delete" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="4" Grid.Column="2" Text="Delete selected task" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="5" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="Ctrl+F" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="5" Grid.Column="2" Text="Focus search" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                                <Border Grid.Row="6" Grid.Column="0" Background="{DynamicResource AppElevated}" CornerRadius="4" Padding="6,2" Margin="0,6,0,0"><TextBlock Text="F5" FontFamily="Consolas" FontSize="11" Foreground="{DynamicResource AppText}"/></Border>
+                                <TextBlock Grid.Row="6" Grid.Column="2" Text="Refresh tasks" Style="{StaticResource AppMuted}" VerticalAlignment="Center" Margin="0,6,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Popup>
             </Grid>
 
             <!-- STAT PILLS -->
