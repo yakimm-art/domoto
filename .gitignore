@@ -6,6 +6,8 @@
 packages/
 *.nupkg
 nuget.exe
+# Stray SQLite DLL folder sometimes dropped in the repo root
+System.Data.SQLite.*/
 
 # User-specific files
 *.user
