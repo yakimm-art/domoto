@@ -203,8 +203,7 @@
                     </Grid.ColumnDefinitions>
 
                     <views:SidebarView x:Name="SidebarControl"
-                                       Grid.Column="0"
-                                       Visibility="Collapsed"/>
+                                       Grid.Column="0"/>
 
                     <ContentControl x:Name="MainContent" Grid.Column="1"/>
                 </Grid>

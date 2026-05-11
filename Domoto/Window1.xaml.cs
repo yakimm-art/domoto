@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using Domoto.Helpers;
 using Domoto.Services;
 using Domoto.ViewModels;
 using Domoto.Views;
@@ -136,7 +141,9 @@ namespace Domoto
                 _sidebarVm.NavigationRequested += OnSidebarNavigationRequested;
                 _sidebarVm.LogoutRequested += OnLogoutRequested;
                 _sidebarVm.SearchTextChanged += OnSidebarSearchTextChanged;
+                _sidebarVm.PropertyChanged += OnSidebarViewModelPropertyChanged;
                 SidebarControl.DataContext = _sidebarVm;
+                UpdateSidebarWidth(_sidebarVm.IsCollapsed);
 
                 _taskVm = new TaskViewModel();
 
@@ -163,6 +170,36 @@ namespace Domoto
             }
         }
 
+        private void OnSidebarViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsCollapsed")
+            {
+                var vm = sender as SidebarViewModel;
+                if (vm != null)
+                {
+                    UpdateSidebarWidth(vm.IsCollapsed);
+                }
+            }
+        }
+
+        private void UpdateSidebarWidth(bool isCollapsed)
+        {
+            AnimateSidebarColumn(isCollapsed ? 70 : 260);
+        }
+
+        private void AnimateSidebarColumn(double targetPixels)
+        {
+            var animation = new GridLengthAnimation
+            {
+                From = SidebarColumn.Width,
+                To = new GridLength(targetPixels, GridUnitType.Pixel),
+                Duration = TimeSpan.FromMilliseconds(220),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, animation);
+        }
+
         private void OnLogoutRequested()
         {
             if (_sidebarVm != null)
@@ -170,6 +207,7 @@ namespace Domoto
                 _sidebarVm.NavigationRequested -= OnSidebarNavigationRequested;
                 _sidebarVm.LogoutRequested -= OnLogoutRequested;
                 _sidebarVm.SearchTextChanged -= OnSidebarSearchTextChanged;
+                _sidebarVm.PropertyChanged -= OnSidebarViewModelPropertyChanged;
             }
 
             _taskVm = null;

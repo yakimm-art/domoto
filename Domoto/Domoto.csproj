@@ -89,6 +89,7 @@
     <Compile Include="Helpers\BoolToStrikethroughConverter.cs" />
     <Compile Include="Helpers\CompletionVerbalizer.cs" />
     <Compile Include="Helpers\FirstLetterConverter.cs" />
+    <Compile Include="Helpers\GridLengthAnimation.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Models\TaskItem.cs" />

@@ -9,6 +9,7 @@ namespace Domoto.ViewModels
     {
         private string _searchText;
         private string _activeNavItem;
+        private bool _isCollapsed;
 
         public string CurrentUsername
         {
@@ -54,6 +55,12 @@ namespace Domoto.ViewModels
             set { _activeNavItem = value; OnPropertyChanged("ActiveNavItem"); }
         }
 
+        public bool IsCollapsed
+        {
+            get { return _isCollapsed; }
+            set { _isCollapsed = value; OnPropertyChanged("IsCollapsed"); }
+        }
+
         public event Action<string> NavigationRequested;
         public event Action LogoutRequested;
         public event Action<string> SearchTextChanged;
@@ -63,6 +70,7 @@ namespace Domoto.ViewModels
         public ICommand NavigateProfileCommand { get; private set; }
         public ICommand NavigateAdminCommand { get; private set; }
         public ICommand LogoutCommand { get; private set; }
+        public ICommand ToggleSidebarCommand { get; private set; }
 
         public SidebarViewModel()
         {
@@ -106,6 +114,11 @@ namespace Domoto.ViewModels
                 var handler = LogoutRequested;
                 if (handler != null)
                     handler();
+            });
+
+            ToggleSidebarCommand = new RelayCommand(o =>
+            {
+                IsCollapsed = !IsCollapsed;
             });
         }
 
