@@ -163,8 +163,7 @@
     </Style>
 
     <!-- ======================================================== -->
-    <!-- BUTTON: Primary (accent)                                  -->
-    <!-- ======================================================== -->
+    <!-- BUTTON: Primary (accent) -->
     <Style x:Key="AppPrimaryButton" TargetType="Button">
         <Setter Property="FontFamily" Value="{DynamicResource AppFont}"/>
         <Setter Property="FontSize" Value="13"/>
@@ -190,8 +189,11 @@
                             <Setter TargetName="bd" Property="Background"
                                     Value="{DynamicResource AppAccentHover}"/>
                         </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Opacity" Value="0.45"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -230,8 +232,11 @@
                             <Setter TargetName="bd" Property="BorderBrush"
                                     Value="{DynamicResource AppBorderStrong}"/>
                         </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Opacity" Value="0.8"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Opacity" Value="0.45"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
