@@ -102,11 +102,14 @@
                                            FontFamily="{DynamicResource AppFont}"
                                            FontSize="28" FontWeight="Bold"
                                            Foreground="White"/>
-                                <TextBlock Text="Let's make today productive. Here's what's on your plate."
-                                           FontFamily="{DynamicResource AppFont}"
+                                <TextBlock FontFamily="{DynamicResource AppFont}"
                                            FontSize="13"
                                            Foreground="White" Opacity="0.88"
-                                           Margin="0,4,0,0"/>
+                                           Margin="0,4,0,0">
+                                    <Run Text="Let's make today productive, "/>
+                                    <Run Text="{Binding CurrentUsername, Mode=OneWay}" FontWeight="SemiBold"/>
+                                    <Run Text=". Here's what's on your plate."/>
+                                </TextBlock>
                             </StackPanel>
                         </DockPanel>
                     </Grid>

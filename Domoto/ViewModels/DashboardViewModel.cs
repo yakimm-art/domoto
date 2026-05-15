@@ -42,6 +42,11 @@ namespace Domoto.ViewModels
 
         public ICommand NavigateToTasksCommand { get; private set; }
 
+        public string CurrentUsername
+        {
+            get { return SessionService.CurrentUser != null ? SessionService.CurrentUser.Username : "there"; }
+        }
+
         public event Action NavigateToTasksRequested;
 
         public DashboardViewModel()
