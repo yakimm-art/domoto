@@ -213,7 +213,18 @@
                             <TextBlock Text="{Binding OverdueCount}"
                                        FontFamily="{DynamicResource AppFont}"
                                        FontSize="34" FontWeight="Bold"
-                                       Foreground="{DynamicResource AppText}"/>
+                                       Foreground="{DynamicResource AppText}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OverdueCount}" Value="0">
+                                                <Setter Property="Foreground" Value="{DynamicResource AppTextMuted}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                 </Grid>
