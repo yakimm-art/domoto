@@ -207,13 +207,35 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Margin="0,0,10,0"
-                            Width="28" Height="28"
+                            Width="32" Height="28"
                             Background="Transparent"
                             BorderThickness="0"
                             Cursor="Hand"
                             Click="TogglePassword_Click"
                             ToolTip="Show/hide password">
-                        <TextBlock x:Name="EyeIcon" Text="👁" FontSize="14"/>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="bd" Background="Transparent" CornerRadius="6">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="bd" Property="Background" Value="{DynamicResource AppHover}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock x:Name="EyeIcon"
+                                   Text="Show"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="10" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppTextMuted}"/>
                     </Button>
                 </Grid>
 

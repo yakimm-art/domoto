@@ -39,14 +39,14 @@ namespace Domoto.Views
                 PasswordVisible.Text = PasswordBox.Password;
                 PasswordBox.Visibility = Visibility.Collapsed;
                 PasswordVisible.Visibility = Visibility.Visible;
-                EyeIcon.Text = "🙈";
+                EyeIcon.Text = "Hide";
             }
             else
             {
                 PasswordBox.Password = PasswordVisible.Text;
                 PasswordVisible.Visibility = Visibility.Collapsed;
                 PasswordBox.Visibility = Visibility.Visible;
-                EyeIcon.Text = "👁";
+                EyeIcon.Text = "Show";
             }
         }
 
