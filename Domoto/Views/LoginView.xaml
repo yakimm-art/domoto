@@ -232,24 +232,22 @@
                             </Style>
                         </Button.Style>
                         <Grid x:Name="EyeIcon" Width="18" Height="18">
-                            <!-- Eye open shape (visible by default) -->
+                            <!-- Eye closed/slashed — shown by default (password is hidden) -->
                             <Canvas x:Name="EyeOpen" Width="18" Height="18">
-                                <!-- Outer arc (top lid) -->
-                                <Path Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"
-                                      Fill="Transparent"
-                                      Data="M 1,9 Q 9,2 17,9 Q 9,16 1,9 Z"/>
-                                <!-- Pupil -->
-                                <Ellipse Canvas.Left="6" Canvas.Top="6"
-                                         Width="6" Height="6"
-                                         Fill="{DynamicResource AppTextMuted}"/>
-                            </Canvas>
-                            <!-- Eye closed (slash) — hidden by default, shown when password visible -->
-                            <Canvas x:Name="EyeClosed" Width="18" Height="18" Visibility="Collapsed">
                                 <Path Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"
                                       Fill="Transparent"
                                       Data="M 1,9 Q 9,2 17,9 Q 9,16 1,9 Z"/>
                                 <Line X1="3" Y1="3" X2="15" Y2="15"
                                       Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"/>
+                            </Canvas>
+                            <!-- Eye open — shown when password is visible -->
+                            <Canvas x:Name="EyeClosed" Width="18" Height="18" Visibility="Collapsed">
+                                <Path Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"
+                                      Fill="Transparent"
+                                      Data="M 1,9 Q 9,2 17,9 Q 9,16 1,9 Z"/>
+                                <Ellipse Canvas.Left="6" Canvas.Top="6"
+                                         Width="6" Height="6"
+                                         Fill="{DynamicResource AppTextMuted}"/>
                             </Canvas>
                         </Grid>
                     </Button>
