@@ -2,53 +2,60 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ============================================================ -->
-    <!-- LIGHT PALETTE                                                 -->
-    <!-- Merged LAST so these brushes override the base theme.         -->
+    <!-- LIGHT PALETTE — warm white base, indigo accent               -->
     <!-- ============================================================ -->
 
-    <!-- Legacy Neo* keys (kept so any StaticResource Neo* still resolves) -->
-    <SolidColorBrush x:Key="NeoBg"           Color="#F7F7F5"/>
+    <!-- Legacy Neo* keys -->
+    <SolidColorBrush x:Key="NeoBg"           Color="#F8F8F6"/>
     <SolidColorBrush x:Key="NeoCardBg"       Color="#FFFFFF"/>
     <SolidColorBrush x:Key="NeoInputBg"      Color="#FFFFFF"/>
     <SolidColorBrush x:Key="NeoSidebarBg"    Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="NeoBorder"        Color="#E5E7EB"/>
-    <SolidColorBrush x:Key="NeoText"          Color="#0F172A"/>
-    <SolidColorBrush x:Key="NeoTextLight"     Color="#0F172A"/>
-    <SolidColorBrush x:Key="NeoSubtext"        Color="#64748B"/>
+    <SolidColorBrush x:Key="NeoBorder"        Color="#E4E7EC"/>
+    <SolidColorBrush x:Key="NeoText"          Color="#0D1117"/>
+    <SolidColorBrush x:Key="NeoTextLight"     Color="#0D1117"/>
+    <SolidColorBrush x:Key="NeoSubtext"        Color="#6B7280"/>
 
-    <!-- Modern App.* palette -->
-    <SolidColorBrush x:Key="AppBg"              Color="#F7F7F5"/>
+    <!-- Backgrounds -->
+    <SolidColorBrush x:Key="AppBg"              Color="#F8F8F6"/>
     <SolidColorBrush x:Key="AppSurface"         Color="#FFFFFF"/>
+<<<<<<< HEAD
     <SolidColorBrush x:Key="AppElevated"        Color="#FAFAFA"/>
     <SolidColorBrush x:Key="AppHover"           Color="#F1F3F5"/>
-    <SolidColorBrush x:Key="AppBorder"          Color="#E5E7EB"/>
-    <SolidColorBrush x:Key="AppBorderStrong"    Color="#D1D5DB"/>
-    <SolidColorBrush x:Key="AppText"            Color="#0F172A"/>
-    <SolidColorBrush x:Key="AppTextMuted"       Color="#64748B"/>
-    <SolidColorBrush x:Key="AppTextSubtle"      Color="#94A3B8"/>
+    <SolidColorBrush x:Key="AppBorder"          Color="#E4E7EC"/>
+    <SolidColorBrush x:Key="AppBorderStrong"    Color="#C9CDD6"/>
+
+    <!-- Text -->
+    <SolidColorBrush x:Key="AppText"            Color="#0D1117"/>
+    <SolidColorBrush x:Key="AppTextMuted"       Color="#6B7280"/>
+    <SolidColorBrush x:Key="AppTextSubtle"      Color="#9CA3AF"/>
+
+    <!-- Accent — purple -->
     <SolidColorBrush x:Key="AppAccent"          Color="#7C3AED"/>
     <SolidColorBrush x:Key="AppAccentHover"     Color="#6D28D9"/>
     <SolidColorBrush x:Key="AppAccentSubtle"    Color="#EDE9FE"/>
+>>>>>>> c8e328f7aba13a7a53d0689d6725a52e49134ecd
     <SolidColorBrush x:Key="AppAccentText"      Color="#FFFFFF"/>
 
-    <SolidColorBrush x:Key="AppSuccess"         Color="#10B981"/>
+    <!-- Semantic -->
+    <SolidColorBrush x:Key="AppSuccess"         Color="#059669"/>
     <SolidColorBrush x:Key="AppSuccessSubtle"   Color="#D1FAE5"/>
-    <SolidColorBrush x:Key="AppWarning"         Color="#F59E0B"/>
+    <SolidColorBrush x:Key="AppWarning"         Color="#D97706"/>
     <SolidColorBrush x:Key="AppWarningSubtle"   Color="#FEF3C7"/>
-    <SolidColorBrush x:Key="AppDanger"          Color="#EF4444"/>
+    <SolidColorBrush x:Key="AppDanger"          Color="#DC2626"/>
     <SolidColorBrush x:Key="AppDangerSubtle"    Color="#FEE2E2"/>
-    <SolidColorBrush x:Key="AppInfo"            Color="#0EA5E9"/>
+    <SolidColorBrush x:Key="AppInfo"            Color="#0284C7"/>
     <SolidColorBrush x:Key="AppInfoSubtle"      Color="#E0F2FE"/>
 
-    <!-- Sidebar tokens (theme-aware light sidebar with accent rail) -->
+    <!-- Sidebar -->
     <SolidColorBrush x:Key="AppSidebarBg"        Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="AppSidebarText"      Color="#0F172A"/>
-    <SolidColorBrush x:Key="AppSidebarMuted"     Color="#94A3B8"/>
-    <SolidColorBrush x:Key="AppSidebarHover"     Color="#F1F3F5"/>
-    <SolidColorBrush x:Key="AppSidebarActive"    Color="#EEF0FF"/>
-    <SolidColorBrush x:Key="AppSidebarBorder"    Color="#E5E7EB"/>
+    <SolidColorBrush x:Key="AppSidebarText"      Color="#0D1117"/>
+    <SolidColorBrush x:Key="AppSidebarMuted"     Color="#9CA3AF"/>
+    <SolidColorBrush x:Key="AppSidebarHover"     Color="#F0F1F5"/>
+    <SolidColorBrush x:Key="AppSidebarActive"    Color="#EEEEFF"/>
+    <SolidColorBrush x:Key="AppSidebarBorder"    Color="#E4E7EC"/>
 
-    <!-- Gradient stops for decorative panels -->
+<<<<<<< HEAD
+    <!-- Gradient stops for hero panels -->
     <Color x:Key="AppGradStart">#7C3AED</Color>
     <Color x:Key="AppGradEnd">#06B6D4</Color>
 

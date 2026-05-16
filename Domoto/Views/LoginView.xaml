@@ -164,7 +164,8 @@
                 <Grid Margin="0,0,0,18">
                     <TextBox x:Name="UsernameBox"
                              Style="{StaticResource LoginInput}"
-                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             KeyDown="UsernameBox_KeyDown"/>
                     <TextBlock Text="👤" FontSize="14"
                                Foreground="{DynamicResource AppTextSubtle}"
                                HorizontalAlignment="Left"
@@ -189,13 +190,67 @@
                 <Grid Margin="0,0,0,14">
                     <PasswordBox x:Name="PasswordBox"
                                  Style="{StaticResource LoginPassword}"
-                                 PasswordChanged="PasswordBox_PasswordChanged"/>
+                                 PasswordChanged="PasswordBox_PasswordChanged"
+                                 KeyDown="PasswordBox_KeyDown"/>
+                    <TextBox x:Name="PasswordVisible"
+                             Style="{StaticResource LoginInput}"
+                             FontSize="14" Height="44" Padding="36,0,44,0"
+                             Visibility="Collapsed"/>
                     <TextBlock Text="🔒" FontSize="13"
                                Foreground="{DynamicResource AppTextSubtle}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                IsHitTestVisible="False"
                                Margin="12,0,0,0"/>
+                    <!-- Eye toggle button -->
+                    <Button x:Name="ToggleBtn"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0"
+                            Width="32" Height="28"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="TogglePassword_Click"
+                            ToolTip="Show/hide password">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="bd" Background="Transparent" CornerRadius="6">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="bd" Property="Background" Value="{DynamicResource AppHover}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                        <Grid x:Name="EyeIcon" Width="18" Height="18">
+                            <!-- Eye closed/slashed — shown by default (password is hidden) -->
+                            <Canvas x:Name="EyeOpen" Width="18" Height="18">
+                                <Path Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"
+                                      Fill="Transparent"
+                                      Data="M 1,9 Q 9,2 17,9 Q 9,16 1,9 Z"/>
+                                <Line X1="3" Y1="3" X2="15" Y2="15"
+                                      Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"/>
+                            </Canvas>
+                            <!-- Eye open — shown when password is visible -->
+                            <Canvas x:Name="EyeClosed" Width="18" Height="18" Visibility="Collapsed">
+                                <Path Stroke="{DynamicResource AppTextMuted}" StrokeThickness="1.5"
+                                      Fill="Transparent"
+                                      Data="M 1,9 Q 9,2 17,9 Q 9,16 1,9 Z"/>
+                                <Ellipse Canvas.Left="6" Canvas.Top="6"
+                                         Width="6" Height="6"
+                                         Fill="{DynamicResource AppTextMuted}"/>
+                            </Canvas>
+                        </Grid>
+                    </Button>
                 </Grid>
 
                 <!-- Remember me -->

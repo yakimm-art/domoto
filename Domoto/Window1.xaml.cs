@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Domoto.Helpers;
 using Domoto.Services;
 using Domoto.ViewModels;
@@ -147,6 +148,11 @@ namespace Domoto
 
                 _taskVm = new TaskViewModel();
 
+                // Start due-date notifications
+                NotificationService.Instance.ToastRequested += ShowToast;
+                NotificationService.Instance.Start();
+                NotificationService.Instance.Check();
+
                 NavigateToDashboard();
             }
         }
@@ -210,12 +216,50 @@ namespace Domoto
                 _sidebarVm.PropertyChanged -= OnSidebarViewModelPropertyChanged;
             }
 
+            // Stop notifications on logout
+            NotificationService.Instance.ToastRequested -= ShowToast;
+            NotificationService.Instance.Stop();
+            ToastBanner.Visibility = Visibility.Collapsed;
+
             _taskVm = null;
             _dashboardVm = null;
             _adminVm = null;
             _sidebarVm = null;
 
             ShowLogin();
+        }
+
+        // ── Toast notification ─────────────────────────────────
+
+        private DispatcherTimer _toastTimer;
+
+        private void ShowToast(string message, bool isWarning)
+        {
+            ToastText.Text = message;
+            ToastBanner.Background = isWarning
+                ? (System.Windows.Media.Brush)FindResource("AppDangerSubtle")
+                : (System.Windows.Media.Brush)FindResource("AppWarningSubtle");
+            ToastText.Foreground = isWarning
+                ? (System.Windows.Media.Brush)FindResource("AppDanger")
+                : (System.Windows.Media.Brush)FindResource("AppWarning");
+            ToastClose.Foreground = ToastText.Foreground;
+
+            ToastBanner.Visibility = Visibility.Visible;
+
+            // Auto-dismiss after 8 seconds
+            if (_toastTimer == null)
+            {
+                _toastTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(8) };
+                _toastTimer.Tick += (s, e) => { ToastBanner.Visibility = Visibility.Collapsed; _toastTimer.Stop(); };
+            }
+            _toastTimer.Stop();
+            _toastTimer.Start();
+        }
+
+        private void ToastClose_Click(object sender, RoutedEventArgs e)
+        {
+            ToastBanner.Visibility = Visibility.Collapsed;
+            if (_toastTimer != null) _toastTimer.Stop();
         }
 
         private void NavigateToDashboard()

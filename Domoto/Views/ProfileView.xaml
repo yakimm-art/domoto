@@ -140,7 +140,7 @@
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                            <Setter Property="Background" Value="{DynamicResource AppAccentSubtle}"/>
+                            <Setter Property="Background" Value="{DynamicResource AppSuccessSubtle}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ProfileMessage}" Value="">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -160,6 +160,7 @@
                         </Style>
                     </Border.Style>
                     <DockPanel>
+<<<<<<< HEAD
                         <TextBlock DockPanel.Dock="Left" FontSize="14" FontWeight="Bold"
                                    VerticalAlignment="Center" Margin="0,0,10,0">
                             <TextBlock.Style>
