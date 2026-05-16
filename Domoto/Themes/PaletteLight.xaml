@@ -26,9 +26,9 @@
     <SolidColorBrush x:Key="AppText"            Color="#0F172A"/>
     <SolidColorBrush x:Key="AppTextMuted"       Color="#64748B"/>
     <SolidColorBrush x:Key="AppTextSubtle"      Color="#94A3B8"/>
-    <SolidColorBrush x:Key="AppAccent"          Color="#6366F1"/>
-    <SolidColorBrush x:Key="AppAccentHover"     Color="#4F46E5"/>
-    <SolidColorBrush x:Key="AppAccentSubtle"    Color="#EEF0FF"/>
+    <SolidColorBrush x:Key="AppAccent"          Color="#7C3AED"/>
+    <SolidColorBrush x:Key="AppAccentHover"     Color="#6D28D9"/>
+    <SolidColorBrush x:Key="AppAccentSubtle"    Color="#EDE9FE"/>
     <SolidColorBrush x:Key="AppAccentText"      Color="#FFFFFF"/>
 
     <SolidColorBrush x:Key="AppSuccess"         Color="#10B981"/>
@@ -49,7 +49,7 @@
     <SolidColorBrush x:Key="AppSidebarBorder"    Color="#E5E7EB"/>
 
     <!-- Gradient stops for decorative panels -->
-    <Color x:Key="AppGradStart">#6366F1</Color>
+    <Color x:Key="AppGradStart">#7C3AED</Color>
     <Color x:Key="AppGradEnd">#06B6D4</Color>
 
 </ResourceDictionary>

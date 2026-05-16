@@ -198,7 +198,7 @@
                     CornerRadius="0,0,14,14">
                 <Grid x:Name="MainContainer">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="260" x:Name="SidebarColumn"/>
+                    <ColumnDefinition Width="268" x:Name="SidebarColumn"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 

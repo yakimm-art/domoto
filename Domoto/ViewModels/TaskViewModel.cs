@@ -43,6 +43,11 @@ namespace Domoto.ViewModels
         private string _newPassword;
         private string _confirmPassword;
         private string _profileMessage;
+        private bool _profileMessageIsError;
+        private string _statusMessage;
+        private bool _statusIsError;
+        private bool _pendingDelete;
+        private TaskItem _pendingDeleteTask;
 
         public ObservableCollection<TaskItem> AllTasks
         {
@@ -181,6 +186,41 @@ namespace Domoto.ViewModels
             set { _profileMessage = value; OnPropertyChanged("ProfileMessage"); }
         }
 
+        public bool ProfileMessageIsError
+        {
+            get { return _profileMessageIsError; }
+            set { _profileMessageIsError = value; OnPropertyChanged("ProfileMessageIsError"); }
+        }
+
+        public string StatusMessage
+        {
+            get { return _statusMessage; }
+            set { _statusMessage = value; OnPropertyChanged("StatusMessage"); }
+        }
+
+        public bool StatusIsError
+        {
+            get { return _statusIsError; }
+            set { _statusIsError = value; OnPropertyChanged("StatusIsError"); }
+        }
+
+        public bool PendingDelete
+        {
+            get { return _pendingDelete; }
+            set { _pendingDelete = value; OnPropertyChanged("PendingDelete"); }
+        }
+
+        public TaskItem PendingDeleteTask
+        {
+            get { return _pendingDeleteTask; }
+            set { _pendingDeleteTask = value; OnPropertyChanged("PendingDeleteTask"); OnPropertyChanged("PendingDeleteTitle"); }
+        }
+
+        public string PendingDeleteTitle
+        {
+            get { return _pendingDeleteTask != null ? _pendingDeleteTask.Title : ""; }
+        }
+
         public bool IsAdmin
         {
             get { return SessionService.IsAdmin; }
@@ -218,6 +258,9 @@ namespace Domoto.ViewModels
         public ICommand RefreshCommand { get; private set; }
         public ICommand FocusSearchCommand { get; private set; }
         public ICommand EscapeCommand { get; private set; }
+        public ICommand ConfirmDeleteCommand { get; private set; }
+        public ICommand CancelDeleteCommand { get; private set; }
+        public ICommand DismissStatusCommand { get; private set; }
 
         public event Action LogoutRequested;
         public event Action FocusSearchRequested;
@@ -247,6 +290,9 @@ namespace Domoto.ViewModels
             RefreshCommand = new RelayCommand(o => LoadTasks());
             FocusSearchCommand = new RelayCommand(o => { if (FocusSearchRequested != null) FocusSearchRequested(); });
             EscapeCommand = new RelayCommand(ExecuteEscape);
+            ConfirmDeleteCommand = new RelayCommand(ExecuteConfirmDelete);
+            CancelDeleteCommand = new RelayCommand(o => { PendingDelete = false; PendingDeleteTask = null; });
+            DismissStatusCommand = new RelayCommand(o => StatusMessage = "");
 
             LoadTasks();
         }
@@ -337,7 +383,8 @@ namespace Domoto.ViewModels
         {
             if (string.IsNullOrWhiteSpace(TaskTitle))
             {
-                MessageBox.Show("Please enter a task title.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                StatusIsError = true;
+                StatusMessage = "Please enter a task title.";
                 return;
             }
 
@@ -369,6 +416,8 @@ namespace Domoto.ViewModels
                 DatabaseService.Instance.AddTask(task);
             }
 
+            StatusIsError = false;
+            StatusMessage = IsEditing ? "Task updated!" : "Task created!";
             ClearForm();
             LoadTasks();
         }
@@ -380,17 +429,19 @@ namespace Domoto.ViewModels
                 task = SelectedTask;
             if (task == null) return;
 
-            var result = MessageBox.Show(
-                "Are you sure you want to delete this task?\n\n" + task.Title,
-                "Confirm Delete",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            PendingDeleteTask = task;
+            PendingDelete = true;
+        }
 
-            if (result == MessageBoxResult.Yes)
-            {
-                DatabaseService.Instance.DeleteTask(task.Id);
-                LoadTasks();
-            }
+        private void ExecuteConfirmDelete(object parameter)
+        {
+            if (PendingDeleteTask == null) return;
+            DatabaseService.Instance.DeleteTask(PendingDeleteTask.Id);
+            PendingDelete = false;
+            PendingDeleteTask = null;
+            StatusIsError = false;
+            StatusMessage = "Task deleted.";
+            LoadTasks();
         }
 
         private void ExecuteEditTask(object parameter)
@@ -439,7 +490,8 @@ namespace Domoto.ViewModels
             {
                 var tasks = AllTasks.ToList();
                 ExportService.ExportToCsv(tasks, dialog.FileName);
-                MessageBox.Show("Tasks exported successfully!", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+                StatusIsError = false;
+                StatusMessage = "Tasks exported successfully!";
             }
         }
 
@@ -447,6 +499,7 @@ namespace Domoto.ViewModels
         {
             if (string.IsNullOrWhiteSpace(NewUsername))
             {
+                ProfileMessageIsError = true;
                 ProfileMessage = "Please enter a username.";
                 return;
             }
@@ -456,10 +509,12 @@ namespace Domoto.ViewModels
             {
                 SessionService.CurrentUser.Username = NewUsername;
                 OnPropertyChanged("CurrentUsername");
+                ProfileMessageIsError = false;
                 ProfileMessage = "Username updated successfully!";
             }
             else
             {
+                ProfileMessageIsError = true;
                 ProfileMessage = "Username already taken.";
             }
         }
@@ -468,21 +523,25 @@ namespace Domoto.ViewModels
         {
             if (string.IsNullOrWhiteSpace(NewPassword))
             {
+                ProfileMessageIsError = true;
                 ProfileMessage = "Please enter a new password.";
                 return;
             }
             if (NewPassword != ConfirmPassword)
             {
+                ProfileMessageIsError = true;
                 ProfileMessage = "Passwords do not match.";
                 return;
             }
             if (NewPassword.Length < 4)
             {
+                ProfileMessageIsError = true;
                 ProfileMessage = "Password must be at least 4 characters.";
                 return;
             }
 
             DatabaseService.Instance.UpdateUserPassword(SessionService.CurrentUser.Id, NewPassword);
+            ProfileMessageIsError = false;
             ProfileMessage = "Password changed successfully!";
             NewPassword = "";
             ConfirmPassword = "";
@@ -511,20 +570,9 @@ namespace Domoto.ViewModels
                               IsEditing;
 
             if (hasContent)
-            {
-                var result = MessageBox.Show(
-                    "Discard changes to the current form?",
-                    "Discard changes",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
-                    ClearForm();
-            }
-            else
-            {
                 ClearForm();
-            }
+            else
+                ClearForm();
         }
 
         private void UpdateSummary()

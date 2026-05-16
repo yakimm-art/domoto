@@ -330,14 +330,19 @@
 
                 <!-- Upgrade promo card -->
                 <Border Margin="16,24,16,0"
-                        Background="{DynamicResource AppAccentSubtle}"
-                        CornerRadius="12"
-                        Padding="14"
+                        CornerRadius="14"
+                        Padding="16"
                         Visibility="{Binding IsCollapsed, Converter={StaticResource InverseBool}}">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#EDE9FE" Offset="0"/>
+                            <GradientStop Color="#E0F2FE" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
                     <StackPanel>
                         <TextBlock Text="✦ Pro tip"
                                    FontFamily="{DynamicResource AppFont}"
-                                   FontSize="10" FontWeight="Bold"
+                                   FontSize="11" FontWeight="Bold"
                                    Foreground="{DynamicResource AppAccent}"
                                    Margin="0,0,0,6"/>
                         <TextBlock Text="Use priorities and due dates to sort your day."
@@ -345,7 +350,7 @@
                                    FontSize="11"
                                    Foreground="{DynamicResource AppText}"
                                    TextWrapping="Wrap"
-                                   LineHeight="16"/>
+                                   LineHeight="17"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

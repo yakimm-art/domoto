@@ -63,6 +63,14 @@ namespace Domoto.ViewModels
             set { _registerConfirmPassword = value; OnPropertyChanged("RegisterConfirmPassword"); }
         }
 
+        private string _registerSuccessMessage;
+
+        public string RegisterSuccessMessage
+        {
+            get { return _registerSuccessMessage; }
+            set { _registerSuccessMessage = value; OnPropertyChanged("RegisterSuccessMessage"); }
+        }
+
         public event Action<bool> LoginCompleted;
 
         public ICommand LoginCommand { get; private set; }
@@ -124,8 +132,8 @@ namespace Domoto.ViewModels
             if (success)
             {
                 ErrorMessage = "";
-                MessageBox.Show("Registration successful! You can now log in.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 IsRegistering = false;
+                RegisterSuccessMessage = "Account created! You can now sign in.";
             }
             else
             {

@@ -395,6 +395,31 @@
                         Style="{StaticResource LoginPrimaryButton}"
                         Margin="0,0,0,16"/>
 
+                <!-- Registration success banner -->
+                <Border Background="{DynamicResource AppSuccessSubtle}"
+                        CornerRadius="8" Padding="12,10" Margin="0,0,0,14">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RegisterSuccessMessage}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Text="✓" FontSize="14" FontWeight="Bold"
+                                   Foreground="{DynamicResource AppSuccess}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding RegisterSuccessMessage}"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppSuccess}"
+                                   TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Already with us?"
                                FontSize="13"

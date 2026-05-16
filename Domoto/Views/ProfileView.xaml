@@ -136,12 +136,11 @@
                 </Border>
 
                 <!-- Inline message banner -->
-                <Border Background="{DynamicResource AppAccentSubtle}"
-                        CornerRadius="10"
-                        Padding="14,12">
+                <Border CornerRadius="10" Padding="14,12">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Background" Value="{DynamicResource AppAccentSubtle}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ProfileMessage}" Value="">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -149,21 +148,48 @@
                                 <DataTrigger Binding="{Binding ProfileMessage}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding ProfileMessageIsError}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Background" Value="{DynamicResource AppSuccessSubtle}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ProfileMessageIsError}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Background" Value="{DynamicResource AppDangerSubtle}"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="ⓘ"
-                                   FontSize="14" FontWeight="Bold"
-                                   Foreground="{DynamicResource AppAccent}"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,10,0"/>
+                        <TextBlock DockPanel.Dock="Left" FontSize="14" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,10,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="✓"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AppSuccess}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ProfileMessageIsError}" Value="True">
+                                            <Setter Property="Text" Value="⚠"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource AppDanger}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <TextBlock Text="{Binding ProfileMessage}"
                                    FontFamily="{DynamicResource AppFont}"
                                    FontSize="12" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource AppAccent}"
-                                   TextWrapping="Wrap"
-                                   VerticalAlignment="Center"/>
+                                   TextWrapping="Wrap" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource AppSuccess}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ProfileMessageIsError}" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AppDanger}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </DockPanel>
                 </Border>
             </StackPanel>
