@@ -18,7 +18,6 @@
     <!-- Backgrounds -->
     <SolidColorBrush x:Key="AppBg"              Color="#F8F8F6"/>
     <SolidColorBrush x:Key="AppSurface"         Color="#FFFFFF"/>
-<<<<<<< HEAD
     <SolidColorBrush x:Key="AppElevated"        Color="#FAFAFA"/>
     <SolidColorBrush x:Key="AppHover"           Color="#F1F3F5"/>
     <SolidColorBrush x:Key="AppBorder"          Color="#E4E7EC"/>
@@ -33,7 +32,6 @@
     <SolidColorBrush x:Key="AppAccent"          Color="#7C3AED"/>
     <SolidColorBrush x:Key="AppAccentHover"     Color="#6D28D9"/>
     <SolidColorBrush x:Key="AppAccentSubtle"    Color="#EDE9FE"/>
->>>>>>> c8e328f7aba13a7a53d0689d6725a52e49134ecd
     <SolidColorBrush x:Key="AppAccentText"      Color="#FFFFFF"/>
 
     <!-- Semantic -->
@@ -54,7 +52,6 @@
     <SolidColorBrush x:Key="AppSidebarActive"    Color="#EEEEFF"/>
     <SolidColorBrush x:Key="AppSidebarBorder"    Color="#E4E7EC"/>
 
-<<<<<<< HEAD
     <!-- Gradient stops for hero panels -->
     <Color x:Key="AppGradStart">#7C3AED</Color>
     <Color x:Key="AppGradEnd">#06B6D4</Color>

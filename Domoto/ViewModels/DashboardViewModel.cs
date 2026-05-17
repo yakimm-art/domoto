@@ -47,7 +47,6 @@ namespace Domoto.ViewModels
             get { return SessionService.CurrentUser != null ? SessionService.CurrentUser.Username : "there"; }
         }
 
-<<<<<<< HEAD
         public string WelcomeMessage
         {
             get { return "Welcome back, " + CurrentUsername + " 👋"; }
