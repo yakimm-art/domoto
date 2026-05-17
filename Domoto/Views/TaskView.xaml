@@ -21,7 +21,7 @@
     <Grid Background="{DynamicResource AppBg}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition x:Name="FormPanelColumn" Width="380"/>
+            <ColumnDefinition x:Name="FormPanelColumn" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <!-- ================================================= -->
@@ -39,6 +39,7 @@
             <Grid Grid.Row="0" Margin="0,0,0,22">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
@@ -72,9 +73,9 @@
                 </Button>
 
                 <!-- Keyboard shortcuts help button -->
-                <Button Grid.Column="1" HorizontalAlignment="Left"
+                <Button Grid.Column="2" HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Margin="-44,0,0,0"
+                        Margin="8,0,0,0"
                         Style="{StaticResource AppIconButton}"
                         ToolTip="Keyboard shortcuts"
                         x:Name="HelpButton"
@@ -512,40 +513,79 @@
         <!-- ================================================= -->
         <!-- RIGHT: Form panel                                  -->
         <!-- ================================================= -->
-        <Border Grid.Column="1"
-                Background="{DynamicResource AppSurface}"
-                BorderBrush="{DynamicResource AppBorder}"
-                BorderThickness="1,0,0,0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          Style="{StaticResource AppScrollViewer}">
-                <StackPanel Margin="30,30,30,30">
+        <Border Grid.ColumnSpan="2"
+                Background="#99000000">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFormOpen}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Border Background="{DynamicResource AppSurface}"
+                        BorderBrush="{DynamicResource AppBorder}"
+                        BorderThickness="1"
+                        CornerRadius="18"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="24"
+                        Width="520">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="24"
+                                          ShadowDepth="8"
+                                          Direction="270"
+                                          Opacity="0.2"
+                                          Color="#000000"/>
+                    </Border.Effect>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  Style="{StaticResource AppScrollViewer}">
+                        <StackPanel Margin="32,32,32,30">
                     <!-- Form header with icon -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                        <Border Width="36" Height="36" CornerRadius="10"
-                                Background="{DynamicResource AppAccentSubtle}"
-                                Margin="0,0,12,0">
-                            <TextBlock FontSize="18" FontWeight="Bold"
-                                       Foreground="{DynamicResource AppAccent}"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="＋"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                                <Setter Property="Text" Value="✎"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Border>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{Binding FormTitle}" Style="{StaticResource AppH2}"/>
-                            <TextBlock Text="Fill out the details below."
-                                       Style="{StaticResource AppMuted}"/>
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="36" Height="36" CornerRadius="10"
+                                    Background="{DynamicResource AppAccentSubtle}"
+                                    Margin="0,0,12,0">
+                                <TextBlock FontSize="18" FontWeight="Bold"
+                                           Foreground="{DynamicResource AppAccent}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="＋"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                    <Setter Property="Text" Value="✎"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding FormTitle}" Style="{StaticResource AppH2}"/>
+                                <TextBlock Text="Fill out the details below."
+                                           Style="{StaticResource AppMuted}"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="✕"
+                                Command="{Binding CloseFormCommand}"
+                                Style="{StaticResource AppIconButton}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                ToolTip="Close"
+                                FontSize="12"
+                                Margin="8,0,0,0"/>
+                    </Grid>
 
                     <Border Height="1" Background="{DynamicResource AppBorder}"
                             Margin="0,18,0,18"/>
@@ -558,7 +598,7 @@
                     <TextBlock Text="Description" Style="{StaticResource AppFieldLabel}"/>
                     <TextBox Style="{StaticResource AppInputMultiline}"
                              Text="{Binding TaskDescription, UpdateSourceTrigger=PropertyChanged}"
-                             Height="100"
+                             Height="120"
                              Margin="0,0,0,16"/>
 
                     <TextBlock Text="Due date" Style="{StaticResource AppFieldLabel}"/>
@@ -724,8 +764,10 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                </StackPanel>
-            </ScrollViewer>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
