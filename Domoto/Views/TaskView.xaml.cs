@@ -12,14 +12,7 @@ namespace Domoto.Views
 
         private void TaskView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (ActualWidth < 1000)
-            {
-                FormPanelColumn.Width = new GridLength(0);
-            }
-            else
-            {
-                FormPanelColumn.Width = new GridLength(380);
-            }
+            FormPanelColumn.Width = new GridLength(0);
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)

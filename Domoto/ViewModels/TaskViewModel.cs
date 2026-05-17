@@ -31,6 +31,7 @@ namespace Domoto.ViewModels
         private string _taskCategory;
         private bool _isEditing;
         private int _editingTaskId;
+        private bool _isFormOpen;
 
         // Summary
         private int _totalTasks;
@@ -131,6 +132,12 @@ namespace Domoto.ViewModels
         {
             get { return _isEditing; }
             set { _isEditing = value; OnPropertyChanged("IsEditing"); OnPropertyChanged("FormTitle"); }
+        }
+
+        public bool IsFormOpen
+        {
+            get { return _isFormOpen; }
+            set { _isFormOpen = value; OnPropertyChanged("IsFormOpen"); }
         }
 
         public string FormTitle
@@ -261,6 +268,7 @@ namespace Domoto.ViewModels
         public ICommand ConfirmDeleteCommand { get; private set; }
         public ICommand CancelDeleteCommand { get; private set; }
         public ICommand DismissStatusCommand { get; private set; }
+        public ICommand CloseFormCommand { get; private set; }
 
         public event Action LogoutRequested;
         public event Action FocusSearchRequested;
@@ -275,6 +283,7 @@ namespace Domoto.ViewModels
             TaskDueDate = DateTime.Now.AddDays(1);
             TaskPriority = "Medium";
             TaskCategory = "Work";
+            IsFormOpen = false;
 
             AddTaskCommand = new RelayCommand(ExecuteAddTask);
             SaveTaskCommand = new RelayCommand(ExecuteSaveTask);
@@ -293,6 +302,7 @@ namespace Domoto.ViewModels
             ConfirmDeleteCommand = new RelayCommand(ExecuteConfirmDelete);
             CancelDeleteCommand = new RelayCommand(o => { PendingDelete = false; PendingDeleteTask = null; });
             DismissStatusCommand = new RelayCommand(o => StatusMessage = "");
+            CloseFormCommand = new RelayCommand(o => ExecuteCloseForm());
 
             LoadTasks();
         }
@@ -376,6 +386,9 @@ namespace Domoto.ViewModels
         private void ExecuteAddTask(object parameter)
         {
             IsEditing = false;
+            IsFormOpen = true;
+            StatusMessage = "";
+            StatusIsError = false;
             ClearForm();
         }
 
@@ -388,37 +401,64 @@ namespace Domoto.ViewModels
                 return;
             }
 
-            if (IsEditing)
+            if (SessionService.CurrentUser == null)
             {
-                var task = AllTasks.FirstOrDefault(t => t.Id == _editingTaskId);
-                if (task != null)
+                StatusIsError = true;
+                StatusMessage = "Your session expired. Please sign in again.";
+                return;
+            }
+
+            try
+            {
+                if (IsEditing)
                 {
-                    task.Title = TaskTitle;
-                    task.Description = TaskDescription;
-                    task.DueDate = TaskDueDate;
-                    task.Priority = TaskPriority;
-                    task.Category = TaskCategory;
-                    DatabaseService.Instance.UpdateTask(task);
+                    var task = AllTasks.FirstOrDefault(t => t.Id == _editingTaskId);
+                    if (task != null)
+                    {
+                        task.Title = TaskTitle;
+                        task.Description = TaskDescription;
+                        task.DueDate = TaskDueDate;
+                        task.Priority = TaskPriority;
+                        task.Category = TaskCategory;
+                        if (!DatabaseService.Instance.UpdateTask(task))
+                        {
+                            StatusIsError = true;
+                            StatusMessage = "Unable to update the task. Please try again.";
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    var task = new TaskItem
+                    {
+                        UserId = SessionService.CurrentUser.Id,
+                        Title = TaskTitle,
+                        Description = TaskDescription ?? "",
+                        DueDate = TaskDueDate,
+                        Priority = TaskPriority,
+                        Category = TaskCategory,
+                        CreatedDate = DateTime.Now
+                    };
+                    if (!DatabaseService.Instance.AddTask(task))
+                    {
+                        StatusIsError = true;
+                        StatusMessage = "Unable to create the task. Please try again.";
+                        return;
+                    }
                 }
             }
-            else
+            catch
             {
-                var task = new TaskItem
-                {
-                    UserId = SessionService.CurrentUser.Id,
-                    Title = TaskTitle,
-                    Description = TaskDescription ?? "",
-                    DueDate = TaskDueDate,
-                    Priority = TaskPriority,
-                    Category = TaskCategory,
-                    CreatedDate = DateTime.Now
-                };
-                DatabaseService.Instance.AddTask(task);
+                StatusIsError = true;
+                StatusMessage = "Task save failed. Please check your database connection.";
+                return;
             }
 
             StatusIsError = false;
             StatusMessage = IsEditing ? "Task updated!" : "Task created!";
             ClearForm();
+            IsFormOpen = false;
             LoadTasks();
         }
 
@@ -436,12 +476,25 @@ namespace Domoto.ViewModels
         private void ExecuteConfirmDelete(object parameter)
         {
             if (PendingDeleteTask == null) return;
-            DatabaseService.Instance.DeleteTask(PendingDeleteTask.Id);
-            PendingDelete = false;
-            PendingDeleteTask = null;
-            StatusIsError = false;
-            StatusMessage = "Task deleted.";
-            LoadTasks();
+            try
+            {
+                if (!DatabaseService.Instance.DeleteTask(PendingDeleteTask.Id))
+                {
+                    StatusIsError = true;
+                    StatusMessage = "Unable to delete the task. Please try again.";
+                    return;
+                }
+                PendingDelete = false;
+                PendingDeleteTask = null;
+                StatusIsError = false;
+                StatusMessage = "Task deleted.";
+                LoadTasks();
+            }
+            catch
+            {
+                StatusIsError = true;
+                StatusMessage = "Task deletion failed. Please check your database connection.";
+            }
         }
 
         private void ExecuteEditTask(object parameter)
@@ -450,6 +503,7 @@ namespace Domoto.ViewModels
             if (task == null) return;
 
             IsEditing = true;
+            IsFormOpen = true;
             _editingTaskId = task.Id;
             TaskTitle = task.Title;
             TaskDescription = task.Description;
@@ -458,14 +512,33 @@ namespace Domoto.ViewModels
             TaskCategory = task.Category;
         }
 
+        private void ExecuteCloseForm()
+        {
+            IsFormOpen = false;
+            ClearForm();
+        }
+
         private void ExecuteToggleComplete(object parameter)
         {
             var task = parameter as TaskItem;
             if (task == null) return;
 
-            task.IsCompleted = !task.IsCompleted;
-            DatabaseService.Instance.UpdateTask(task);
-            LoadTasks();
+            try
+            {
+                task.IsCompleted = !task.IsCompleted;
+                if (!DatabaseService.Instance.UpdateTask(task))
+                {
+                    StatusIsError = true;
+                    StatusMessage = "Unable to update the task. Please try again.";
+                    return;
+                }
+                LoadTasks();
+            }
+            catch
+            {
+                StatusIsError = true;
+                StatusMessage = "Task update failed. Please check your database connection.";
+            }
         }
 
         private void ClearForm()
@@ -477,6 +550,8 @@ namespace Domoto.ViewModels
             TaskDueDate = DateTime.Now.AddDays(1);
             TaskPriority = "Medium";
             TaskCategory = "Work";
+            StatusMessage = "";
+            StatusIsError = false;
         }
 
         private void ExecuteExportCsv(object parameter)
